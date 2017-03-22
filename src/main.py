@@ -5,9 +5,15 @@
 # Main file for PentAI - launches the REPL to run
 # whatever command is desired.
 
+import os
 import game
 
+rows, columns = os.popen('stty size', 'r').read().split()
+columns = min([int(columns), 50])
+
 terminal_in = 'PentAI> '
+welcome = ' Welcome to PentAI '
+help = ' PentAI: Help Manual '
 
 # list of all commands for operating at the toplevel
 possible_cmds = {
@@ -15,15 +21,21 @@ possible_cmds = {
         'help': 'Displays this screen.'
         }
 
-print('--- Welcome to PentAI ---')
+print()
+print()
+print(('-'*int(((columns)-len(welcome))/2) + welcome + '-'*int(((columns)-len(welcome))/2)))
 cmd = input(terminal_in)
 
 # REPL loop
 while cmd != 'exit':
     if cmd == 'help':
-        print('----- PentAI: Help Manual -----')
+        print()
+        print('-'*int(((columns)-len(help))/2) + help + '-'*int(((columns)-len(help))/2))
         for i in possible_cmds:
-            print(' ' + i + ': ' + possible_cmds[i])
+            cmd = ' ' + i + ': ' + possible_cmds[i] + ' '
+            print(' '*5 + cmd)
+        print('-'*columns)
+        print()
     else:
         print("Unrecognized command.  Type 'help' for a list of commands.")
     cmd = input(terminal_in)
