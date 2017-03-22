@@ -5,11 +5,10 @@
 # Main file for PentAI - launches the REPL to run
 # whatever command is desired.
 
-import os
+from terminal import Printer
 import game
 
-rows, columns = os.popen('stty size', 'r').read().split()
-columns = min([int(columns), 50])
+session = Printer.Printer()
 
 terminal_in = 'PentAI> '
 welcome = ' Welcome to PentAI '
@@ -21,21 +20,17 @@ possible_cmds = {
         'help': 'Displays this screen.'
         }
 
-print()
-print()
-print(('-'*int(((columns)-len(welcome))/2) + welcome + '-'*int(((columns)-len(welcome))/2)))
+session.print_heading(welcome)
 cmd = input(terminal_in)
 
 # REPL loop
 while cmd != 'exit':
     if cmd == 'help':
-        print()
-        print('-'*int(((columns)-len(help))/2) + help + '-'*int(((columns)-len(help))/2))
+        session.print_heading(help)
         for i in possible_cmds:
             cmd = ' ' + i + ': ' + possible_cmds[i] + ' '
-            print(' '*5 + cmd)
-        print('-'*columns)
-        print()
+            session.print_option(cmd)
+        session.print_sep()
     else:
         print("Unrecognized command.  Type 'help' for a list of commands.")
     cmd = input(terminal_in)
