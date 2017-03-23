@@ -8,7 +8,13 @@ import os, math
 
 class Printer:
     def __init__(self):
-        self.rows, self.columns = os.popen('stty size', 'r').read().split()
+        x = os.popen('stty size', 'r').read().split()
+        if (len(x) > 0):
+            self.rows = x[0]
+            self.columns = x[1]
+        else:
+            self.rows = 1
+            self.columns = 50
         self.columns = min([int(self.columns), 50])
 
     def printable_title(self, text):
