@@ -20,6 +20,7 @@ class Printer:
         self.columns = min([int(self.columns), 50])
 
     def printable_title(self, text):
+        text = ' ' + text.strip(' ') + ' '
         border_float = (self.columns - len(text))/2
         left_border = int(math.ceil(border_float))
         right_border = int(math.floor(border_float))

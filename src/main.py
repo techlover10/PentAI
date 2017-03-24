@@ -11,8 +11,8 @@ import game
 session = Printer.Printer()
 
 terminal_in = 'PentAI> '
-welcome = ' Welcome to PentAI '
-help = ' PentAI: Help Manual '
+welcome = 'Welcome to PentAI'
+help = 'PentAI: Help Manual'
 
 # list of all commands for operating at the toplevel
 possible_cmds = {
