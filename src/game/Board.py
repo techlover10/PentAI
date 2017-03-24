@@ -23,9 +23,12 @@ class Board:
                 2: 0
                 }
 
-    def play(self, pID, xcoord, ycoord):
-        self.grid[xcoord][ycoord] = pid
+    def play(self, player, xcoord, ycoord):
+        self.grid[xcoord][ycoord] = player
         self.check_capture()
+
+    def spot_empty(self, xcoord, ycoord):
+        return self.grid[xcoord][ycoord] == 0
 
     def check_capture(self):
         # TODO: Implement this

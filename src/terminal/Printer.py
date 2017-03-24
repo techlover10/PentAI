@@ -47,3 +47,27 @@ class Printer:
             return
         print_text = self.printable_option(text)
         print(print_text)
+
+    def board_printer(self, game_board):
+        self.print_heading('Game Board')
+        self.print_sep()
+        print(' ____'*19)
+        topstr = ('|    '*19) + '|'
+        botstr = ('|____'*19) + '|'
+        for row in game_board.grid:
+            curr_str = '|'
+            for column in row:
+                curr_str += ' '
+                curr_str = curr_str + ('  ' if column is 0 else 'P' + str(column)) + ' |'
+            print(topstr)
+            print(curr_str)
+            print(botstr)
+
+    def print_captures(self, game_board, player=None):
+        if player:
+            print('Player ' + str(player) + ' has ' + str(game_board.captures[player]) + '.')
+        else:
+            for i in game_board.captures:
+                print('Player ' + str(i) + ' has ' + str(game_board.captures[i]) + '.')
+
+
