@@ -42,7 +42,7 @@ while cmd != 'exit':
             session.print_option(cmd)
         session.print_sep()
 
-    if cmd[0] == 'start':
+    elif cmd[0] == 'start':
         if current_game.session_active:
             print('Game already started!')
         else:
@@ -62,7 +62,7 @@ while cmd != 'exit':
             else:
                 session.print_captures(current_game.board)
 
-    elif cmd in possible_cmds:
+    elif cmd[0] in possible_cmds:
         print('No active session!  Type "start" to start a game.')
 
     else:
