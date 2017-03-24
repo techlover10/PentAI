@@ -5,6 +5,7 @@
 # A game is an instance of an actual game
 
 import game.Board as Board
+import logic.Logic as Logic
 
 class Game:
     def __init__(self):
@@ -14,6 +15,11 @@ class Game:
 
     def start_game(self):
         self.session_active = True
+
+    def reset(self):
+        self.board = Board.Board()
+        self.session_active = False
+        self.current_turn = 1
 
     def play(self, xcoord, ycoord):
         if xcoord < 1 or xcoord > 19 or ycoord < 1 or ycoord > 19:
@@ -30,6 +36,13 @@ class Game:
             return
 
         self.board.play(self.current_turn, xcoord, ycoord)
+
+        if Logic.check_win(self.board, xcoord, ycoord, self.current_turn):
+            print("Player " + str(self.current_turn) + 'wins!')
+            print("Game ended.")
+            self.reset()
+            return
+
         self.current_turn = 2 if self.current_turn is 1 else 1
         print("Player " + str(self.current_turn) + "'s turn!")
 
