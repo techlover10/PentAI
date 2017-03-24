@@ -22,8 +22,8 @@ possible_cmds = {
         'help': 'Displays this screen.',
         'start': 'Starts a game.',
         'board': 'Prints the board if a game is active.',
-        'play': 'Plays a piece.  Game will alternate between players automatically.',
-        'captures': "Displays the state of captures.  Enter 'captures X' to display the captuers of player X."
+        'play': 'Plays a piece.  Game will alternate between players automatically.  Game board is 1-indexed.',
+        'captures': "Displays the state of captures.  Enter 'captures X' to display the captures of player X."
         }
 
 session.print_heading(welcome)

@@ -16,10 +16,13 @@ class Game:
         self.session_active = True
 
     def play(self, xcoord, ycoord):
-        if xcoord < 0 or xcoord > 19 or ycoord < 0 or ycoord > 19:
+        if xcoord < 1 or xcoord > 19 or ycoord < 1 or ycoord > 19:
             print("Invalid position specified!")
             print("Player " + str(self.current_turn) + "'s turn!")
             return
+
+        xcoord -= 1 # adjust for 0 index
+        ycoord -= 1 # adjust for 0 index
 
         if not self.board.spot_empty(xcoord, ycoord):
             print ("Position is occupied!")
