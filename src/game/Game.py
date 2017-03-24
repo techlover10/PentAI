@@ -38,7 +38,7 @@ class Game:
         self.board.play(self.current_turn, xcoord, ycoord)
 
         if Logic.check_win(self.board, xcoord, ycoord, self.current_turn):
-            print("Player " + str(self.current_turn) + 'wins!')
+            print("Player " + str(self.current_turn) + ' wins!')
             print("Game ended.")
             self.reset()
             return

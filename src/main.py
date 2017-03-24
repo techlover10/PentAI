@@ -23,7 +23,8 @@ possible_cmds = {
         'start': 'Starts a game.',
         'board': 'Prints the board if a game is active.',
         'play': 'Plays a piece.  Game will alternate between players automatically.  Game board is 1-indexed.',
-        'captures': "Displays the state of captures.  Enter 'captures X' to display the captures of player X."
+        'captures': "Displays the state of captures.  Enter 'captures X' to display the captures of player X.",
+        'turn': "Displays the player of the current turn"
         }
 
 session.print_heading(welcome)
@@ -56,11 +57,17 @@ while cmd != 'exit':
         elif nargs >= 3 and cmd[0] == 'play':
             current_game.play(int(cmd[1]), int(cmd[2]))
 
+        elif nargs <3 and cmd[0] == 'play':
+            print("Invalid position specified.")
+
         elif cmd[0] == 'captures':
             if nargs > 1:
                 session.print_captures(current_game.board, int(cmd[1]))
             else:
                 session.print_captures(current_game.board)
+
+        elif cmd[0] == 'turn':
+            session.print_heading('Player ' + str(current_game.current_turn) + "'s turn")
 
     elif cmd[0] in possible_cmds:
         print('No active session!  Type "start" to start a game.')
