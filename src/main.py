@@ -24,7 +24,8 @@ possible_cmds = {
         'board': 'Prints the board if a game is active.',
         'play': 'Plays a piece.  Game will alternate between players automatically.  Game board is 1-indexed.',
         'captures': "Displays the state of captures.  Enter 'captures X' to display the captures of player X.",
-        'turn': "Displays the player of the current turn"
+        'turn': "Displays the player of the current turn",
+        'occupied': "Displays a list of currently occupied board positions"
         }
 
 session.print_heading(welcome)
@@ -68,6 +69,10 @@ while cmd != 'exit':
 
         elif cmd[0] == 'turn':
             session.print_heading('Player ' + str(current_game.current_turn) + "'s turn")
+        
+        elif cmd[0] == 'occupied':
+            session.print_occupied(current_game.board)
+            
 
     elif cmd[0] in possible_cmds:
         print('No active session!  Type "start" to start a game.')

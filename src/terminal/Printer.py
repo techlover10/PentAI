@@ -70,4 +70,9 @@ class Printer:
             for i in game_board.captures:
                 print('Player ' + str(i) + ' has ' + str(game_board.captures[i]) + '.')
 
+    def print_occupied(self, game_board):
+        print("Currently occupied positions")
+        for i in game_board.occupied:
+            print(str(i))
+
 

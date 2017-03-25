@@ -8,7 +8,6 @@ from copy import copy, deepcopy
 
 class Board:
     def __init__(self):
-
         # initialize the start grid
         start_row = []
         for i in range (19):
@@ -22,9 +21,10 @@ class Board:
                 1: 0,
                 2: 0
                 }
-
+        self.occupied = []
     def play(self, player, xcoord, ycoord):
         self.grid[xcoord][ycoord] = player
+        self.occupied.append((xcoord + 1, ycoord + 1))
 
     def get_piece(self, xcoord, ycoord):
         return self.grid[xcoord][ycoord]
