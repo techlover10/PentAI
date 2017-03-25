@@ -21,13 +21,17 @@ class Board:
                 1: 0,
                 2: 0
                 }
-        self.occupied = []
+
     def play(self, player, xcoord, ycoord):
         self.grid[xcoord][ycoord] = player
-        self.occupied.append((xcoord + 1, ycoord + 1))
 
     def get_piece(self, xcoord, ycoord):
+        if (xcoord > 18 or ycoord > 18 or xcoord < 0 or ycoord < 0):
+            return -1
         return self.grid[xcoord][ycoord]
+    
+    def piece_captured(self, xcoord, ycoord):
+        self.grid[xcoord][ycoord] = 0
 
     def spot_empty(self, xcoord, ycoord):
         return self.get_piece(xcoord, ycoord) == 0

@@ -49,13 +49,69 @@ def check_win(board, xcoord, ycoord, player):
         return True
     if line_count(board, xcoord-1, ycoord, 'u', player) + line_count(board, xcoord+1, ycoord, 'd', player) + 1 >= 5:
         return True
-
+    result = check_capture(board, xcoord, ycoord, player)
+    board.captures[player] += result
     if (board.get_captures(player)) >= 5:
         return True
 
     return False
 
 def check_capture(board, xcoord, ycoord, player):
-    # TODO: Implement
-    return False
+    result = 0
+    other_player = 0
+    if (player == 1):
+        other_player = 2
+    else:
+        other_player = 1
+    if (board.get_piece(xcoord, ycoord) == other_player):
+        return result
+    if (board.get_piece(xcoord + 3, ycoord) == player):
+        if (not board.spot_empty(xcoord + 1, ycoord) and board.get_piece(xcoord + 1, ycoord) == other_player 
+            and not board.spot_empty(xcoord + 2, ycoord) and board.get_piece(xcoord + 2, ycoord) == other_player):
+            board.piece_captured(xcoord + 1, ycoord)
+            board.piece_captured(xcoord + 2, ycoord)
+            result += 1 
+    if (board.get_piece(xcoord - 3, ycoord) == player):
+        if (not board.spot_empty(xcoord - 1, ycoord) and board.get_piece(xcoord - 1, ycoord) == other_player 
+            and not board.spot_empty(xcoord - 2, ycoord) and board.get_piece(xcoord - 2, ycoord) == other_player):
+            board.piece_captured(xcoord - 1, ycoord)
+            board.piece_captured(xcoord - 2, ycoord)
+            result += 1 
+    if (board.get_piece(xcoord, ycoord + 3) == player):
+        if (not board.spot_empty(xcoord, ycoord + 1) and board.get_piece(xcoord, ycoord + 1) == other_player 
+            and not board.spot_empty(xcoord, ycoord + 2) and board.get_piece(xcoord, ycoord + 2) == other_player):
+            board.piece_captured(xcoord, ycoord + 1)
+            board.piece_captured(xcoord, ycoord + 2)
+            result += 1 
+    if (board.get_piece(xcoord, ycoord - 3) == player):
+        if (not board.spot_empty(xcoord, ycoord - 1) and board.get_piece(xcoord, ycoord -1) == other_player 
+            and not board.spot_empty(xcoord, ycoord - 2) and board.get_piece(xcoord, ycoord - 2) == other_player):
+            board.piece_captured(xcoord, ycoord - 1)
+            board.piece_captured(xcoord, ycoord - 2)
+            result += 1 
+    if (board.get_piece(xcoord + 3, ycoord + 3) == player):
+        if (not board.spot_empty(xcoord + 1, ycoord + 1) and board.get_piece(xcoord + 1, ycoord + 1) == other_player 
+            and not board.spot_empty(xcoord + 2, ycoord +2) and board.get_piece(xcoord + 2, ycoord + 2) == other_player):
+            board.piece_captured(xcoord + 1, ycoord + 1)
+            board.piece_captured(xcoord + 2, ycoord + 2)
+            result += 1 
+    if (board.get_piece(xcoord - 3, ycoord - 3) == player):
+        if (not board.spot_empty(xcoord - 1, ycoord - 1) and board.get_piece(xcoord - 1, ycoord - 1) == other_player 
+            and not board.spot_empty(xcoord - 2, ycoord - 2) and board.get_piece(xcoord - 2, ycoord - 2) == other_player):
+            board.piece_captured(xcoord - 1, ycoord - 1)
+            board.piece_captured(xcoord - 2, ycoord - 2)
+            result += 1
+    if (board.get_piece(xcoord + 3, ycoord - 3) == player):
+        if (not board.spot_empty(xcoord + 1, ycoord - 1) and board.get_piece(xcoord + 1, ycoord - 1) == other_player 
+            and not board.spot_empty(xcoord + 2, ycoord - 2) and board.get_piece(xcoord + 2, ycoord - 2) == other_player):
+            board.piece_captured(xcoord + 1, ycoord - 1)
+            board.piece_captured(xcoord + 2, ycoord - 2)
+            result += 1  
+    if (board.get_piece(xcoord - 3, ycoord + 3) == player):
+        if (not board.spot_empty(xcoord - 1, ycoord + 1) and board.get_piece(xcoord - 1, ycoord + 1) == other_player 
+            and not board.spot_empty(xcoord - 2, ycoord + 2) and board.get_piece(xcoord - 2, ycoord + 2) == other_player):
+            board.piece_captured(xcoord - 1, ycoord + 1)
+            board.piece_captured(xcoord - 2, ycoord + 2)
+            result += 1 
+    return result
 
