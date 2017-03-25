@@ -22,19 +22,19 @@ class Board:
                 2: 0
                 }
 
-    def play(self, player, xcoord, ycoord):
-        self.grid[xcoord][ycoord] = player
+    def play(self, player, r, c):
+        self.grid[r][c] = player
 
-    def get_piece(self, xcoord, ycoord):
-        if (xcoord > 18 or ycoord > 18 or xcoord < 0 or ycoord < 0):
+    def get_piece(self, r, c):
+        if (r > 18 or c > 18 or r < 0 or c < 0):
             return -1
-        return self.grid[xcoord][ycoord]
+        return self.grid[r][c]
     
-    def piece_captured(self, xcoord, ycoord):
-        self.grid[xcoord][ycoord] = 0
+    def piece_captured(self, r, c):
+        self.grid[r][c] = 0
 
-    def spot_empty(self, xcoord, ycoord):
-        return self.get_piece(xcoord, ycoord) == 0
+    def spot_empty(self, r, c):
+        return self.get_piece(r, c) == 0
 
     def get_captures(self, pid):
         return self.captures[pid]
