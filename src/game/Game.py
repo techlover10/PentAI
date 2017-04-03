@@ -6,16 +6,14 @@
 
 import game.Board as Board
 import logic.Logic as Logic
-import game.DumbAgent
+import game.DumbAgent as DumbAgent
 
 class Game:
     def __init__(self, agent1=None, agent2=None):
         self.board = Board.Board()
         self.session_active = False
         self.current_turn = 1 # start with player 1
-        self.agents[0] = None
-        self.agents[1] = agent1
-        self.agents[2] = agent2
+        self.agents = [None, agent1, agent2]
 
     def start_game(self):
         self.session_active = True
