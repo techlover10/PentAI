@@ -26,8 +26,12 @@ class Game:
 
     # Game will run until it is a human's turn
     def run_game(self):
-        while self.agents[self.current_turn]:
-            play(self.agents[self.current_turn].get_move(self.board))
+        is_run = False
+        while self.agents[self.current_turn] and self.session_active:
+            is_run = True
+            print("agent " + str(self.current_turn) + " is playing")
+            self.play(*self.agents[self.current_turn].get_move(self.current_turn, self.board))
+        return is_run
 
     def play(self, xcoord, ycoord):
         if xcoord < 1 or xcoord > 19 or ycoord < 1 or ycoord > 19:
@@ -52,6 +56,7 @@ class Game:
             return
 
         self.current_turn = 2 if self.current_turn is 1 else 1
-        print("Player " + str(self.current_turn) + "'s turn!")
+        if not self.run_game():
+            print("Player " + str(self.current_turn) + "'s turn!")
 
 

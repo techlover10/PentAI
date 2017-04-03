@@ -7,6 +7,7 @@
 
 from terminal import Printer
 import game.Game as game
+import game.DumbAgent as DumbAgent
 
 session = Printer.Printer()
 
@@ -14,7 +15,7 @@ terminal_in = 'PentAI> '
 welcome = 'Welcome to PentAI'
 help = 'PentAI: Help Manual'
 
-current_game = game.Game()
+current_game = None
 
 # list of all commands for operating at the toplevel
 possible_cmds = {
@@ -44,13 +45,22 @@ while cmd != 'exit':
         session.print_sep()
 
     elif cmd[0] == 'start':
-        if current_game.session_active:
+        if current_game and current_game.session_active:
             print('Game already started!')
         else:
+            if len(cmd) >2:
+                # Both players are AI
+                current_game = game.Game(DumbAgent.DumbAgent(), DumbAgent.DumbAgent())
+            elif len(cmd) >1:
+                # Player 1 is an AI, player 2 is human
+                current_game = game.Game(DumbAgent.DumbAgent())
+            else:
+                # Both players are human
+                current_game = game.Game()
             current_game.start_game()
             print("Game started.  Player 1 goes first!")
     # Active session commands only
-    elif current_game.session_active:
+    elif current_game and current_game.session_active:
         if cmd[0] == 'board':
             session.board_printer(current_game.board)
         
