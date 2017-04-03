@@ -33,23 +33,23 @@ class Game:
             self.play(*self.agents[self.current_turn].get_move(self.current_turn, self.board))
         return is_run
 
-    def play(self, xcoord, ycoord):
-        if xcoord < 1 or xcoord > 19 or ycoord < 1 or ycoord > 19:
+    def play(self, r, c):
+        if r < 1 or r > 19 or c < 1 or c > 19:
             print("Invalid position specified!")
             print("Player " + str(self.current_turn) + "'s turn!")
             return
 
-        xcoord -= 1 # adjust for 0 index
-        ycoord -= 1 # adjust for 0 index
+        r -= 1 # adjust for 0 index
+        c -= 1 # adjust for 0 index
 
-        if not self.board.spot_empty(xcoord, ycoord):
+        if not self.board.spot_empty(r, c):
             print ("Position is occupied!")
             print("Player " + str(self.current_turn) + "'s turn!")
             return
 
-        self.board.play(self.current_turn, xcoord, ycoord)
+        self.board.play(self.current_turn, r, c)
 
-        if Logic.check_win(self.board, xcoord, ycoord, self.current_turn):
+        if Logic.check_win(self.board, r, c, self.current_turn):
             print("Player " + str(self.current_turn) + ' wins!')
             print("Game ended.")
             self.reset()
