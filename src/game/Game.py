@@ -6,20 +6,30 @@
 
 import game.Board as Board
 import logic.Logic as Logic
+import game.DumbAgent
 
 class Game:
-    def __init__(self):
+    def __init__(self, agent1=None, agent2=None):
         self.board = Board.Board()
         self.session_active = False
         self.current_turn = 1 # start with player 1
+        self.agents[0] = None
+        self.agents[1] = agent1
+        self.agents[2] = agent2
 
     def start_game(self):
         self.session_active = True
+        self.run_game()
 
     def reset(self):
         self.board = Board.Board()
         self.session_active = False
         self.current_turn = 1
+
+    # Game will run until it is a human's turn
+    def run_game(self):
+        while self.agents[self.current_turn]:
+            play(self.agents[self.current_turn].get_move(self.board))
 
     def play(self, xcoord, ycoord):
         if xcoord < 1 or xcoord > 19 or ycoord < 1 or ycoord > 19:
