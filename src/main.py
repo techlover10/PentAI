@@ -7,7 +7,7 @@
 
 from terminal import Printer
 import game.Game as game
-import game.DumbAgent as DumbAgent
+import agents.DumbAgent as DumbAgent
 
 session = Printer.Printer()
 

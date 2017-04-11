@@ -6,7 +6,7 @@
 
 import game.Board as Board
 import logic.Logic as Logic
-import game.DumbAgent as DumbAgent
+import agents.DumbAgent as DumbAgent
 
 class Game:
     def __init__(self, agent1=None, agent2=None):
