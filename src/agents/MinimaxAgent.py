@@ -30,6 +30,8 @@ class MinimaxAgent:
         for r in range(0, 19):
             for c in range(0,19):
                 curr_raw = heuristic_count(board, r, c, self.pid)
+                if sum(curr_raw.values()) > 0:
+                    print(curr_raw)
                 for line_count in curr_raw.values():
                     if line_count in self.H_VALS.keys():
                         state_val += self.H_VALS[line_count]
