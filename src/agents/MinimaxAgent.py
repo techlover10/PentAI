@@ -32,9 +32,9 @@ class MinimaxAgent:
                 if not board.spot_empty(r,c):
                     continue
                 curr_raw = heuristic_count(board, r, c, self.pid)
-                if sum(curr_raw.values()) > 0:
-                    print('Row: ' + str(r) + ', Col: ' + str(c))
-                    print(curr_raw)
+                #if sum(curr_raw.values()) > 0:
+                #    print('Row: ' + str(r) + ', Col: ' + str(c))
+                #    print(curr_raw)
                 for line_count in curr_raw.values():
                     if line_count in self.H_VALS.keys():
                         state_val += self.H_VALS[line_count]
