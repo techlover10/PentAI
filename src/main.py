@@ -81,10 +81,9 @@ while cmd != 'exit':
             session.print_heading('Player ' + str(current_game.current_turn) + "'s turn")
 
         elif cmd[0] == 'value':
-            #TODO: DELETE
-            new_agent = MinimaxAgent.MinimaxAgent(current_game.current_turn)
+            new_agent = MinimaxAgent.MinimaxAgent()
             print("Heuristic value for player " + str(current_game.current_turn))
-            print(new_agent.value_state(current_game.board))
+            print(new_agent.value_state(current_game.board, current_game.current_turn))
             
 
     elif cmd[0] in possible_cmds:

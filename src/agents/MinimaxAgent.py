@@ -18,13 +18,17 @@ class MinimaxAgent:
                 }
 
     def get_move(self, pid, board):
-        return self.minimax(board, 2, pid)[1]
+        #print('get_move called')
+        move = self.minimax(board, 1, pid)[1]
+        print(move)
+        return (move[0]+1,move[1]+1)
 
     def value_state(self, board, pid):
-        print('evaluating state')
+        #print('evaluating state')
         state_val = 0
         for r in range(0, 19):
             for c in range(0,19):
+                #print('checking ' + str(r) + ', ' + str(c))
                 if not board.spot_empty(r,c):
                     continue
                 curr_raw = heuristic_count(board, r, c, pid)
@@ -39,7 +43,7 @@ class MinimaxAgent:
         return (state_val, None)
 
     def minimax(self, board, bound, player):
-        print('minimaxing')
+        #print('minimaxing')
         other_player = 0
         if (player == 1):
             other_player = 2
@@ -53,6 +57,7 @@ class MinimaxAgent:
         CURR_POS = (-1,-1)
         for r in range(0, 19):
             for c in range(0, 19):
+                #print('checking ' + str(r) + ', ' + str(c))
                 if board.spot_empty(r, c):
                     new_board = deepcopy(board)
                     new_board.play(player, r, c)
@@ -64,7 +69,7 @@ class MinimaxAgent:
         return (CURR_MAX, CURR_POS)
 
     def maximin(self, board, bound, player):
-        print('maximining')
+        #print('maximining')
         other_player = 0
         if (player == 1):
             other_player = 2
@@ -78,6 +83,7 @@ class MinimaxAgent:
         CURR_POS = (-1,-1)
         for r in range(0, 19):
             for c in range(0, 19):
+                #print('checking ' + str(r) + ', ' + str(c))
                 if board.spot_empty(r, c):
                     new_board = deepcopy(board)
                     new_board.play(player, r, c)
