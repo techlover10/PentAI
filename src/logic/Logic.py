@@ -61,7 +61,8 @@ def heuristic_count(board, r, c, player):
         'horizontal': line_count(board, r, c-1, 'l', player) + line_count(board, r, c+1, 'r', player) + 1,
         'top_right': line_count(board, r+1, c-1, 'dl', player) + line_count(board, r-1, c+1, 'ur', player) + 1,
         'top_left': line_count(board, r-1, c-1, 'ul', player) + line_count(board, r+1, c+1, 'dr', player) + 1,
-        'vertical': line_count(board, r-1, c, 'u', player) + line_count(board, r+1, c, 'd', player) + 1
+        'vertical': line_count(board, r-1, c, 'u', player) + line_count(board, r+1, c, 'd', player) + 1,
+        'capture': check_capture(board, r, c, player) + board.captures[player]
         }
     return counts
 
