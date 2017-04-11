@@ -19,7 +19,7 @@ class MinimaxAgent:
 
     def get_move(self, pid, board):
         #print('get_move called')
-        move = self.minimax(board, 1, pid)[1]
+        move = self.minimax(board, 2, pid)[1]
         print(move)
         return (move[0]+1,move[1]+1)
 
