@@ -29,6 +29,8 @@ class MinimaxAgent:
         state_val = 0
         for r in range(0, 19):
             for c in range(0,19):
+                if not board.spot_empty(r,c):
+                    continue
                 curr_raw = heuristic_count(board, r, c, self.pid)
                 if sum(curr_raw.values()) > 0:
                     print('Row: ' + str(r) + ', Col: ' + str(c))
