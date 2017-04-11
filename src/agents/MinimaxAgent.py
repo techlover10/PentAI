@@ -4,7 +4,7 @@
 #
 # Agent must implement one function, get_move
 
-from Logic import heuristic_count
+from logic.Logic import heuristic_count
 
 class MinimaxAgent:
     def __init__(self, pid):
@@ -35,5 +35,6 @@ class MinimaxAgent:
                         state_val += self.H_VALS[line_count]
                     else:
                         state_val += line_count
+        return state_val
 
 
