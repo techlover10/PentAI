@@ -51,14 +51,17 @@ class MinimaxAgent:
             other_player = 1
 
         if bound == 0:
-            
             return value_state(board)
+
+        CURR_MAX = -1
         for r in range(0, 19):
             for c in range(0, 19):
                 if board.spot_empty(r, c):
                     new_board = deepcopy(board)
                     new_board.play(player, r, c)
-                    maximin(new_board, bound - 1, other_player)    
+                    curr_val = maximin(new_board, bound - 1, other_player)    
+                    if curr_val > CURR_MAX:
+                        CURR_MAX = curr_val
 
     def maximin(self, board, bound):
         other_player = 0
@@ -69,10 +72,15 @@ class MinimaxAgent:
 
         if bound == 0:
             return value_state(board)
+
+        CURR_MAX = -1
         for r in range(0, 19):
             for c in range(0, 19):
                 if board.spot_empty(r, c):
                     new_board = deepcopy(board)
                     new_board.play(player, r, c)
                     maximin(new_board, bound - 1, other_player)    
+                    curr_val = minimax(new_board, bound - 1, other_player)    
+                    if curr_val < CURR_MAX:
+                        CURR_MAX = curr_val
 
