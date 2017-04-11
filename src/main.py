@@ -8,6 +8,7 @@
 from terminal import Printer
 import game.Game as game
 import agents.DumbAgent as DumbAgent
+import agents.MinimaxAgent as MinimaxAgent
 
 session = Printer.Printer()
 
@@ -26,6 +27,7 @@ possible_cmds = {
         'play': 'Plays a piece.  Game will alternate between players automatically.  Game board is 1-indexed.',
         'captures': "Displays the state of captures.  Enter 'captures X' to display the captures of player X.",
         'turn': "Displays the player of the current turn",
+        'state_val': "Displays the value of the current state for the current player"
         }
 
 session.print_heading(welcome)
@@ -78,6 +80,12 @@ while cmd != 'exit':
 
         elif cmd[0] == 'turn':
             session.print_heading('Player ' + str(current_game.current_turn) + "'s turn")
+
+        elif cmd[0] == 'value':
+            #TODO: DELETE
+            new_agent = MinimaxAgent.MinimaxAgent(current_game.current_turn)
+            print("Heuristic value for player " + str(current_game.current_turn))
+            print(new_agent.value_state(current_game.board))
             
 
     elif cmd[0] in possible_cmds:
