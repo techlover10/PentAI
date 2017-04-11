@@ -8,7 +8,7 @@ from logic.Logic import heuristic_count
 from copy import copy, deepcopy
 
 class MinimaxAgent:
-    def __init__(self, pid):
+    def __init__(self):
         self.H_VALS = {
                 1: 0,
                 2: 1,
@@ -16,17 +16,12 @@ class MinimaxAgent:
                 4: 3,
                 5: 4
                 }
-        self.xcounter = 0
-        self.ycounter = 0
-        self.pid = pid
-        pass
 
-    def get_move(self, board):
-        self.xcounter+=1
-        self.ycounter+=1
-        return (self.xcounter, self.ycounter)
+    def get_move(self, pid, board):
+        return self.minimax(board, 2, pid)[1]
 
     def value_state(self, board, pid):
+        print('evaluating state')
         state_val = 0
         for r in range(0, 19):
             for c in range(0,19):
@@ -41,9 +36,10 @@ class MinimaxAgent:
                         state_val += self.H_VALS[line_count]
                     else:
                         state_val += line_count
-        return state_val
+        return (state_val, None)
 
     def minimax(self, board, bound, player):
+        print('minimaxing')
         other_player = 0
         if (player == 1):
             other_player = 2
@@ -51,19 +47,24 @@ class MinimaxAgent:
             other_player = 1
 
         if bound == 0:
-            return value_state(board)
+            return self.value_state(board, player)
 
         CURR_MAX = -1
+        CURR_POS = (-1,-1)
         for r in range(0, 19):
             for c in range(0, 19):
                 if board.spot_empty(r, c):
                     new_board = deepcopy(board)
                     new_board.play(player, r, c)
-                    curr_val = maximin(new_board, bound - 1, other_player)    
+                    curr_val = self.maximin(new_board, bound - 1, other_player)[0]
                     if curr_val > CURR_MAX:
                         CURR_MAX = curr_val
+                        CURR_POS = (r,c)
 
-    def maximin(self, board, bound):
+        return (CURR_MAX, CURR_POS)
+
+    def maximin(self, board, bound, player):
+        print('maximining')
         other_player = 0
         if (player == 1):
             other_player = 2
@@ -71,16 +72,19 @@ class MinimaxAgent:
             other_player = 1
 
         if bound == 0:
-            return value_state(board)
+            return self.value_state(board, player)
 
-        CURR_MAX = -1
+        CURR_MIN = -1
+        CURR_POS = (-1,-1)
         for r in range(0, 19):
             for c in range(0, 19):
                 if board.spot_empty(r, c):
                     new_board = deepcopy(board)
                     new_board.play(player, r, c)
-                    maximin(new_board, bound - 1, other_player)    
-                    curr_val = minimax(new_board, bound - 1, other_player)    
-                    if curr_val < CURR_MAX:
-                        CURR_MAX = curr_val
+                    curr_val = self.minimax(new_board, bound - 1, other_player)[0] 
+                    if curr_val < CURR_MIN:
+                        CURR_MIN = curr_val
+                        CURR_POS = (r,c)
+
+        return (CURR_MIN, CURR_POS)
 

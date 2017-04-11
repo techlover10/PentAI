@@ -7,7 +7,6 @@
 
 from terminal import Printer
 import game.Game as game
-import agents.DumbAgent as DumbAgent
 import agents.MinimaxAgent as MinimaxAgent
 
 session = Printer.Printer()
@@ -52,10 +51,10 @@ while cmd != 'exit':
         else:
             if len(cmd) >2:
                 # Both players are AI
-                current_game = game.Game(DumbAgent.DumbAgent(), DumbAgent.DumbAgent())
+                current_game = game.Game(MinimaxAgent.MinimaxAgent(), MinimaxAgent.MinimaxAgent())
             elif len(cmd) >1:
                 # Player 1 is an AI, player 2 is human
-                current_game = game.Game(DumbAgent.DumbAgent())
+                current_game = game.Game(MinimaxAgent.MinimaxAgent())
             else:
                 # Both players are human
                 current_game = game.Game()

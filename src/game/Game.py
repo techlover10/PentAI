@@ -6,7 +6,7 @@
 
 import game.Board as Board
 import logic.Logic as Logic
-import agents.DumbAgent as DumbAgent
+import agents.MinimaxAgent as MinimaxAgent
 
 class Game:
     def __init__(self, agent1=None, agent2=None):
