@@ -5,6 +5,7 @@
 # Agent must implement one function, get_move
 
 from logic.Logic import heuristic_count
+from copy import copy, deepcopy
 
 class MinimaxAgent:
     def __init__(self, pid):
@@ -25,13 +26,13 @@ class MinimaxAgent:
         self.ycounter+=1
         return (self.xcounter, self.ycounter)
 
-    def value_state(self, board):
+    def value_state(self, board, pid):
         state_val = 0
         for r in range(0, 19):
             for c in range(0,19):
                 if not board.spot_empty(r,c):
                     continue
-                curr_raw = heuristic_count(board, r, c, self.pid)
+                curr_raw = heuristic_count(board, r, c, pid)
                 #if sum(curr_raw.values()) > 0:
                 #    print('Row: ' + str(r) + ', Col: ' + str(c))
                 #    print(curr_raw)
@@ -42,4 +43,36 @@ class MinimaxAgent:
                         state_val += line_count
         return state_val
 
+    def minimax(self, board, bound, player):
+        other_player = 0
+        if (player == 1):
+            other_player = 2
+        else:
+            other_player = 1
+
+        if bound == 0:
+            
+            return value_state(board)
+        for r in range(0, 19):
+            for c in range(0, 19):
+                if board.spot_empty(r, c):
+                    new_board = deepcopy(board)
+                    new_board.play(player, r, c)
+                    maximin(new_board, bound - 1, other_player)    
+
+    def maximin(self, board, bound):
+        other_player = 0
+        if (player == 1):
+            other_player = 2
+        else:
+            other_player = 1
+
+        if bound == 0:
+            return value_state(board)
+        for r in range(0, 19):
+            for c in range(0, 19):
+                if board.spot_empty(r, c):
+                    new_board = deepcopy(board)
+                    new_board.play(player, r, c)
+                    maximin(new_board, bound - 1, other_player)    
 
