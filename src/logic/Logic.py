@@ -56,6 +56,15 @@ def check_win(board, r, c, player):
 
     return False
 
+def heuristic_count(board, r, c, player):
+    counts = {
+        'horizontal': line_count(board, r, c-1, 'l', player) + line_count(board, r, c+1, 'r', player) + 1,
+        'top_right': line_count(board, r+1, c-1, 'dl', player) + line_count(board, r-1, c+1, 'ur', player) + 1,
+        'top_left': line_count(board, r-1, c-1, 'ul', player) + line_count(board, r+1, c+1, 'dr', player) + 1,
+        'vertical': line_count(board, r-1, c, 'u', player) + line_count(board, r+1, c, 'd', player) + 1
+        }
+    return counts
+
 def check_capture(board, r, c, player):
     result = 0
     other_player = 0
