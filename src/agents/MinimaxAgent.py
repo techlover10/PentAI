@@ -40,7 +40,7 @@ class MinimaxAgent:
                     state_val += self.H_VALS[line_count]
                 else:
                     state_val += line_count
-        print('state value for player ' + str(pid) + ': ' + str(state_val))
+        #print('state value for player ' + str(pid) + ': ' + str(state_val))
         return (state_val, None)
 
     def minimax(self, board, bound, player):
