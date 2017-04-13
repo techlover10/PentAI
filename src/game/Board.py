@@ -49,6 +49,7 @@ class Board:
     
     def piece_captured(self, r, c):
         self.grid[r][c] = 0
+        self.occupied.remove((r,c))
 
     def spot_empty(self, r, c):
         return self.get_piece(r, c) == 0
