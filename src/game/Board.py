@@ -22,8 +22,25 @@ class Board:
                 2: 0
                 }
 
+        self.occupied = [] #list of occupied positions
+        self.empty_adjacent = [] # list of empty spots adjacent to an occupied spot
+
     def play(self, player, r, c):
+        tuple = (r,c)
         self.grid[r][c] = player
+        self.occupied.append(tuple)
+
+        if tuple in self.empty_adjacent:
+            self.empty_adjacent.remove(tuple)
+
+        # add adjacents
+        for i in range(r-1, r+2):
+            for j in range (c-1, c+2):
+                if r >= 0 and r < 19:
+                    if c >= 0 and c < 19:
+                        if (self.spot_empty(i,j)):
+                            self.empty_adjacent.append((i,j))
+
 
     def get_piece(self, r, c):
         if (r > 18 or c > 18 or r < 0 or c < 0):

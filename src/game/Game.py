@@ -34,13 +34,10 @@ class Game:
         return is_run
 
     def play(self, r, c):
-        if r < 1 or r > 19 or c < 1 or c > 19:
+        if r < 0 or r > 18 or c < 0 or c > 18:
             print("Invalid position specified!")
             print("Player " + str(self.current_turn) + "'s turn!")
             return
-
-        r -= 1 # adjust for 0 index
-        c -= 1 # adjust for 0 index
 
         if not self.board.spot_empty(r, c):
             print ("Position is occupied!")
