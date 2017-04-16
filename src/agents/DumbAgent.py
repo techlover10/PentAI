@@ -9,9 +9,8 @@ class DumbAgent:
     def __init__(self):
         self.xcounter = 0
         self.ycounter = 0
-        pass
 
     def get_move(self, pid, board):
-        self.xcounter+=1
-        self.ycounter+=1
+        self.xcounter = self.xcounter + 1
+        self.ycounter = self.ycounter + 1
         return (self.xcounter, self.ycounter)

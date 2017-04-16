@@ -4,7 +4,7 @@
 #
 # Agent must implement one function, get_move
 
-from logic.Logic import heuristic_count
+from logic.Logic import heuristic_count, check_win
 from copy import copy, deepcopy
 import random, math
 
@@ -20,11 +20,20 @@ class MinimaxAgent:
 
     def get_move(self, pid, board):
         #print('get_move called')
-        move = self.minimax(board, 2, pid)[1]
-        #print(move)
-        if move == (-1,-1):
+        #move = self.minimax(board, 2, pid)[1]
+        if len(board.empty_adjacent) == 0:
             move = (math.floor(random.random()*18), math.floor(random.random()*18))
-        return (move[0],move[1])
+            return move
+        else:
+            moves = {}
+            for item in board.empty_adjacent:
+                new_board = deepcopy(board)
+                new_board.play(pid, *item)
+                print(new_board)
+                value = self.alphabeta(new_board, item, pid, 2, -1, float('inf'), True)
+                moves[value] = item
+            return moves[max(moves.keys())]
+        #print(move)
 
     def value_state(self, board, pid):
         #print('evaluating state')
@@ -46,6 +55,27 @@ class MinimaxAgent:
                         state_val += count
         #print('state value for player ' + str(pid) + ': ' + str(state_val))
         return (state_val, None)
+
+    def alphabeta(self, board, coord, player, depth, alpha, beta, maximizing_player):
+        if depth == 0 or check_win(board, *coord, player):
+            return value_state(board, player)
+        if maximizing_player:
+            v = -1
+            for item in board.empty_adjacent:
+                v = max(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, False))
+                alpha = max(alpha, v)
+                if beta <= alpha:
+                    break
+            return v
+        else:
+            v = float('inf')
+            for item in board.empty_adjacent:
+                v = min(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, True))
+                beta = min(beta, v)
+                if beta <= alpha:
+                    break
+            return v
+                
 
     def minimax(self, board, bound, player):
         #print('minimaxing')

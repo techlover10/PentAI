@@ -50,7 +50,7 @@ def check_win(board, r, c, player):
     if line_count(board, r-1, c, 'u', player) + line_count(board, r+1, c, 'd', player) + 1 >= 5:
         return True
     result = check_capture(board, r, c, player)
-    board.captures[player] += result
+    board.captures[player] = board.captures[player] + result
     if (board.get_captures(player)) >= 5:
         return True
 
