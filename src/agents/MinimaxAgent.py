@@ -29,7 +29,6 @@ class MinimaxAgent:
             for item in board.empty_adjacent:
                 new_board = deepcopy(board)
                 new_board.play(pid, *item)
-                print(new_board)
                 value = self.alphabeta(new_board, item, pid, 2, -1, float('inf'), True)
                 moves[value] = item
             return moves[max(moves.keys())]
@@ -54,15 +53,18 @@ class MinimaxAgent:
                     else:
                         state_val += count
         #print('state value for player ' + str(pid) + ': ' + str(state_val))
-        return (state_val, None)
+        #return (state_val, None)
+        return state_val
 
     def alphabeta(self, board, coord, player, depth, alpha, beta, maximizing_player):
         if depth == 0 or check_win(board, *coord, player):
-            return value_state(board, player)
+            return self.value_state(board, player)
         if maximizing_player:
             v = -1
             for item in board.empty_adjacent:
-                v = max(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, False))
+                new_board = deepcopy(board)
+                new_board.play(player, *item)
+                v = max(v, self.alphabeta(new_board, item, player, depth-1, alpha, beta, False))
                 alpha = max(alpha, v)
                 if beta <= alpha:
                     break
@@ -70,7 +72,9 @@ class MinimaxAgent:
         else:
             v = float('inf')
             for item in board.empty_adjacent:
-                v = min(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, True))
+                new_board = deepcopy(board)
+                new_board.play(player, *item)
+                v = min(v, self.alphabeta(new_board, item, player, depth-1, alpha, beta, True))
                 beta = min(beta, v)
                 if beta <= alpha:
                     break
