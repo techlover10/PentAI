@@ -26,7 +26,9 @@ class MinimaxAgent:
             return move
         else:
             moves = {}
-            for item in board.empty_adjacent:
+            for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(pid, *tuple), pid)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True))[0:4]:
+            #for item in board.empty_adjacent:
+                item = tup[0]
                 new_board = deepcopy(board)
                 new_board.play(pid, *item)
                 value = self.alphabeta(new_board, item, pid, 2, -1, float('inf'), True)
@@ -61,20 +63,20 @@ class MinimaxAgent:
             return self.value_state(board, player)
         if maximizing_player:
             v = -1
-            for item in board.empty_adjacent:
-                new_board = deepcopy(board)
-                new_board.play(player, *item)
-                v = max(v, self.alphabeta(new_board, item, player, depth-1, alpha, beta, False))
+            for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(player, *tuple), player)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True))[0:4]:
+                item = tup[0]
+            #for item in board.empty_adjacent:
+                v = max(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, False))
                 alpha = max(alpha, v)
                 if beta <= alpha:
                     break
             return v
         else:
             v = float('inf')
-            for item in board.empty_adjacent:
-                new_board = deepcopy(board)
-                new_board.play(player, *item)
-                v = min(v, self.alphabeta(new_board, item, player, depth-1, alpha, beta, True))
+            #for item in board.empty_adjacent:
+            for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(player, *tuple), player)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True))[0:4]:
+                item = tup[0]
+                v = min(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, True))
                 beta = min(beta, v)
                 if beta <= alpha:
                     break

@@ -40,6 +40,7 @@ class Board:
                     if c >= 0 and c < 19:
                         if (self.spot_empty(i,j)):
                             self.empty_adjacent.append((i,j))
+        return self
 
 
     def get_piece(self, r, c):
