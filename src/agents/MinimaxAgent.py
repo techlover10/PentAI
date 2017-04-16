@@ -35,11 +35,15 @@ class MinimaxAgent:
             #if sum(curr_raw.values()) > 0:
             #    print('Row: ' + str(r) + ', Col: ' + str(c))
             #    print(curr_raw)
-            for line_count in curr_raw.values():
-                if line_count in self.H_VALS.keys():
-                    state_val += self.H_VALS[line_count]
+            for key in curr_raw.keys():
+                count = curr_raw[key]
+                if key in self.H_VALS.keys():
+                    state_val += self.H_VALS[count]
                 else:
-                    state_val += line_count
+                    if count in self.H_VALS.keys():
+                        state_val += self.H_VALS[count]
+                    else:
+                        state_val += count
         #print('state value for player ' + str(pid) + ': ' + str(state_val))
         return (state_val, None)
 
