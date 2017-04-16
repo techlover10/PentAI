@@ -6,6 +6,9 @@
 
 import os, math
 
+PCOL = '\033[92m'
+ENDC = '\033[0m'
+
 class Printer:
     def __init__(self):
         x = os.popen('stty size', 'r').read().split()
@@ -25,6 +28,7 @@ class Printer:
         left_border = int(math.ceil(border_float))
         right_border = int(math.floor(border_float))
         return (('-'*left_border) + text + ('-'* right_border))
+
 
     def printable_option(self, text):
         return (' '*5 + text)
@@ -51,14 +55,18 @@ class Printer:
     def board_printer(self, game_board):
         self.print_heading('Game Board')
         self.print_sep()
-        print(' ____'*19)
-        topstr = ('|    '*19) + '|'
-        botstr = ('|____'*19) + '|'
+        print('  ' + ' ____'*19)
+        topstr = '  '  +  ('|    '*19) + '|'
+        botstr = '  ' + ('|____'*19) + '|'
+        rowidx = 0
         for row in game_board.grid:
-            curr_str = '|'
+            rowidx += 1
+            colidx = 0
+            curr_str = (' ' + str(rowidx) if rowidx < 10 else str(rowidx)) + '|'
             for column in row:
+                colidx += 1
                 curr_str += ' '
-                curr_str = curr_str + ('  ' if column is 0 else 'P' + str(column)) + ' |'
+                curr_str = curr_str + ((' ' + str(colidx) if colidx < 10 else str(colidx))  if column is 0 else PCOL + 'P' + str(column)) + ENDC + ' |'
             print(topstr)
             print(curr_str)
             print(botstr)
