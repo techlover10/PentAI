@@ -38,7 +38,7 @@ class Board:
             for j in range (c-1, c+2):
                 if r >= 0 and r < 19:
                     if c >= 0 and c < 19:
-                        if (self.spot_empty(i,j)):
+                        if (self.spot_empty(i,j) and not (i,j) in self.empty_adjacent):
                             self.empty_adjacent.append((i,j))
         return self
 
