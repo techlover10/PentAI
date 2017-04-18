@@ -26,6 +26,7 @@ class Board:
         self.empty_adjacent = [] # list of empty spots adjacent to an occupied spot
 
     def play(self, player, r, c):
+        #print("playing " + str(r) + ', ' + str(c))
         tuple = (r,c)
         self.grid[r][c] = player
         self.occupied.append(tuple)
