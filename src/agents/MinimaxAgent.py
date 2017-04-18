@@ -15,7 +15,8 @@ class MinimaxAgent:
                 2: 1,
                 3: 2,
                 4: 3,
-                5: 4
+                5: float('inf'),
+                'capture': 2
                 }
 
     def get_move(self, pid, board):
@@ -38,6 +39,8 @@ class MinimaxAgent:
 
     def value_state(self, board, pid):
         #print('evaluating state')
+        if (board.get_captures(pid) > 4):
+            return float('inf')
         state_val = 0
         for (r,c) in board.empty_adjacent:
             #print('checking ' + str(r) + ', ' + str(c))
@@ -48,7 +51,7 @@ class MinimaxAgent:
             for key in curr_raw.keys():
                 count = curr_raw[key]
                 if key in self.H_VALS.keys():
-                    state_val += self.H_VALS[count]
+                    state_val += self.H_VALS[key] * count
                 else:
                     if count in self.H_VALS.keys():
                         state_val += self.H_VALS[count]
@@ -59,8 +62,13 @@ class MinimaxAgent:
         return state_val
 
     def alphabeta(self, board, coord, player, depth, alpha, beta, maximizing_player):
-        if depth == 0 or check_win(board, *coord, player):
+        if depth == 0:
             return self.value_state(board, player)
+        if check_win(board, *coord, player):
+            if maximizing_player:
+                return float('inf')
+            else:
+                return -(float('inf'))
         if maximizing_player:
             v = -1
             for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(player, *tuple), player)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True))[0:4]:
