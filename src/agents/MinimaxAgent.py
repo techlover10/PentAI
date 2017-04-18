@@ -56,7 +56,7 @@ class MinimaxAgent:
                     if count in self.H_VALS.keys():
                         state_val += self.H_VALS[count]
                     else:
-                        state_val += count
+                        state_val = float('inf') # not in dict, must be greater than 5
         #print('state value for player ' + str(pid) + ': ' + str(state_val))
         #return (state_val, None)
         return state_val
