@@ -27,12 +27,13 @@ class MinimaxAgent:
             return move
         else:
             moves = {}
+            print(board.empty_adjacent)
             for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(pid, *tuple), pid)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True)):
             #for item in board.empty_adjacent:
                 item = tup[0]
                 new_board = deepcopy(board)
                 new_board.play(pid, *item)
-                value = self.alphabeta(new_board, item, pid, 1, -1, float('inf'), True)
+                value = self.alphabeta(new_board, item, pid, 2, -float('inf'), float('inf'), True)
                 moves[value] = item
             print(moves)
             return moves[max(moves.keys())]
@@ -67,11 +68,11 @@ class MinimaxAgent:
             return self.value_state(board, player)
         # TODO: This technically isn't right, fix it later
         if check_win(board, *coord, player) and maximizing_player:
-            return -float('inf')
+            return float('inf')
         elif check_win(board, *coord, (player+1%2)):
-            return (float('inf'))
+            return float('inf')
         if maximizing_player:
-            v = -1
+            v = -(float('inf'))
             for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(player, *tuple), player)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True)):
                 item = tup[0]
             #for item in board.empty_adjacent:
@@ -103,7 +104,7 @@ class MinimaxAgent:
         if bound == 0:
             return self.value_state(board, player)
 
-        CURR_MAX = -1
+        CURR_MAX = -(float('inf'))
         CURR_POS = (-1,-1)
         for (r,c) in board.empty_adjacent:
             #print('checking ' + str(r) + ', ' + str(c))

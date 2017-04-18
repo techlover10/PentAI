@@ -55,9 +55,9 @@ class Printer:
     def board_printer(self, game_board):
         self.print_heading('Game Board')
         self.print_sep()
-        print('  ' + ' ____'*19)
-        topstr = '  '  +  ('|    '*19) + '|'
-        botstr = '  ' + ('|____'*19) + '|'
+        print('  ' + ' __'*19)
+        topstr = '  '  +  ('|  '*19) + '|'
+        botstr = '  ' + ('|__'*19) + '|'
         rowidx = 0
         for row in game_board.grid:
             rowidx += 1
@@ -65,9 +65,9 @@ class Printer:
             curr_str = (' ' + str(rowidx) if rowidx < 10 else str(rowidx)) + '|'
             for column in row:
                 colidx += 1
-                curr_str += ' '
-                curr_str = curr_str + ((' ' + str(colidx) if colidx < 10 else str(colidx))  if column is 0 else PCOL + 'P' + str(column)) + ENDC + ' |'
-            print(topstr)
+                curr_str += ''
+                curr_str = curr_str + ((' ' + str(colidx) if colidx < 10 else str(colidx))  if column is 0 else PCOL + 'P' + str(column)) + ENDC + '|'
+            #print(topstr)
             print(curr_str)
             print(botstr)
 
