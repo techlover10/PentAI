@@ -20,8 +20,6 @@ class MinimaxAgent:
                 }
 
     def get_move(self, pid, board):
-        #print('get_move called')
-        #move = self.minimax(board, 2, pid)[1]
         if len(board.empty_adjacent) == 0:
             move = (math.floor(random.random()*18), math.floor(random.random()*18))
             return move
@@ -29,39 +27,41 @@ class MinimaxAgent:
             moves = {}
             print(board.empty_adjacent)
             for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(pid, *tuple), pid)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True)):
-            #for item in board.empty_adjacent:
                 item = tup[0]
                 new_board = deepcopy(board)
                 new_board.play(pid, *item)
-                value = self.alphabeta(new_board, item, pid, 2, -float('inf'), float('inf'), True)
-                moves[value] = item
+                value = self.alphabeta(new_board, item, pid, 1, -float('inf'), float('inf'), True)
+                if value not in moves:
+                    moves[value] = []
+                if item not in moves[value]:
+                    moves[value].append(item)
             print(moves)
-            return moves[max(moves.keys())]
-        #print(move)
+            return random.choice(moves[max(moves.keys())])
 
     def value_state(self, board, pid):
-        #print('evaluating state')
-        if (board.get_captures(pid) > 4):
+        capturesA = board.get_captures(1) # captures of player 1
+        capturesB = board.get_captures(2) # captures of player 2
+        if (capturesA > 4 or capturesB > 4):
             return float('inf')
-        state_val = 0
-        for (r,c) in board.empty_adjacent:
-            #print('checking ' + str(r) + ', ' + str(c))
-            curr_raw = heuristic_count(board, r, c, pid)
-            #if sum(curr_raw.values()) > 0:
-            #    print('Row: ' + str(r) + ', Col: ' + str(c))
-            #    print(curr_raw)
+        state_val = [0, 0, 0] # players are 1 and 2, 0 index is 0
+        for (r,c) in board.occupied:
+            curr_pid = board.get_piece(r,c)
+            if (check_win(board, r, c, curr_pid)):
+                if curr_pid == pid:
+                    return float('inf')
+                else:
+                    return -float('inf')
+            curr_raw = heuristic_count(board, r, c, curr_pid)
             for key in curr_raw.keys():
                 count = curr_raw[key]
                 if key in self.H_VALS.keys():
-                    state_val += self.H_VALS[key] * count
+                    state_val[curr_pid] += self.H_VALS[key] * count
                 else:
                     if count in self.H_VALS.keys():
-                        state_val += self.H_VALS[count]
+                        state_val[curr_pid] += self.H_VALS[count]
                     else:
-                        state_val = float('inf') # not in dict, must be greater than 5
-        #print('state value for player ' + str(pid) + ': ' + str(state_val))
-        #return (state_val, None)
-        return state_val
+                        state_val[curr_pid] = float('inf') # not in dict, must be greater than 5
+        return state_val[pid] - state_val[2 if pid is 1 else 1]
 
     def alphabeta(self, board, coord, player, depth, alpha, beta, maximizing_player):
         if depth == 0:
@@ -69,75 +69,24 @@ class MinimaxAgent:
         # TODO: This technically isn't right, fix it later
         if check_win(board, *coord, player) and maximizing_player:
             return float('inf')
-        elif check_win(board, *coord, (player+1%2)):
-            return float('inf')
+        elif check_win(board, *coord, player):
+            return -float('inf')
         if maximizing_player:
             v = -(float('inf'))
             for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(player, *tuple), player)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True)):
                 item = tup[0]
-            #for item in board.empty_adjacent:
-                v = max(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, False))
+                v = max(v, self.alphabeta(deepcopy(board).play(player, *item), item, 2 if player is 1 else 1, depth-1, alpha, beta, False))
                 alpha = max(alpha, v)
                 if beta <= alpha:
                     break
             return v
         else:
             v = float('inf')
-            #for item in board.empty_adjacent:
-            for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(player, *tuple), player)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=True)):
+            for tup in (sorted([(lambda tuple: (tuple, self.value_state(deepcopy(board).play(player, *tuple), player)))(tuple) for tuple in board.empty_adjacent], key=(lambda tup: tup[1]), reverse=False)):
                 item = tup[0]
-                v = min(v, self.alphabeta(deepcopy(board).play(player, *item), item, player, depth-1, alpha, beta, True))
+                v = min(v, self.alphabeta(deepcopy(board).play(player, *item), item, 2 if player is 1 else 1, depth-1, alpha, beta, True))
                 beta = min(beta, v)
                 if beta <= alpha:
                     break
             return v
                 
-
-    def minimax(self, board, bound, player):
-        #print('minimaxing')
-        other_player = 0
-        if (player == 1):
-            other_player = 2
-        else:
-            other_player = 1
-
-        if bound == 0:
-            return self.value_state(board, player)
-
-        CURR_MAX = -(float('inf'))
-        CURR_POS = (-1,-1)
-        for (r,c) in board.empty_adjacent:
-            #print('checking ' + str(r) + ', ' + str(c))
-            new_board = deepcopy(board)
-            new_board.play(player, r, c)
-            curr_val = self.maximin(new_board, bound - 1, other_player)[0]
-            if curr_val > CURR_MAX:
-                CURR_MAX = curr_val
-                CURR_POS = (r,c)
-
-        return (CURR_MAX, CURR_POS)
-
-    def maximin(self, board, bound, player):
-        #print('maximining')
-        other_player = 0
-        if (player == 1):
-            other_player = 2
-        else:
-            other_player = 1
-
-        if bound == 0:
-            return self.value_state(board, player)
-
-        CURR_MIN = float('inf')
-        CURR_POS = (-1,-1)
-        for (r,c) in board.empty_adjacent:
-            #print('checking ' + str(r) + ', ' + str(c))
-            new_board = deepcopy(board)
-            new_board.play(player, r, c)
-            curr_val = self.minimax(new_board, bound - 1, other_player)[0] 
-            if curr_val < CURR_MIN:
-                CURR_MIN = curr_val
-                CURR_POS = (r,c)
-
-        return (CURR_MIN, CURR_POS)
-
