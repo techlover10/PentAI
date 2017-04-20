@@ -29,7 +29,7 @@ class MinimaxAgent:
             for item in board.empty_adjacent:
                 new_board = deepcopy(board)
                 new_board.play(pid, *item)
-                value = self.minimax(new_board, 2, item, pid)
+                value = self.maximin(new_board, 2, item, pid)
                 print("value " + str(value) + "\n")
                 print("best value " + str(best_val) + "\n")
                 print("position " + str(item) + "\n");
