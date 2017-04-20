@@ -50,7 +50,7 @@ class MinimaxAgent:
         for (r,c) in board.empty_adjacent:
             if (check_win(board, r, c, other_pid)):
                 #print('win possible at ' + str(r) + ', ' + str(c) + ' with player ' + str(other_pid))
-                return 1000
+                return -1000
             """if (check_win(board, r, c, pid)):
                 print('win possible at ' + str(r) + ', ' + str(c) + ' with player ' + str(pid))
                 return 1000
@@ -89,7 +89,7 @@ class MinimaxAgent:
         #if check_win(board, *coord, other_player):
             #return -1000
         
-        CURR_MAX = -1000
+        CURR_MAX = -100
         for (r,c) in board.empty_adjacent:
             #print('checking ' + str(r) + ', ' + str(c))
             new_board = deepcopy(board)
@@ -113,7 +113,7 @@ class MinimaxAgent:
         #if check_win(board, *coord, other_player):
             #return -1000
 
-        CURR_MIN = 1000
+        CURR_MIN = 100
         for (r,c) in board.empty_adjacent:
             new_board = deepcopy(board)
             new_board.play(other_player, r, c)
