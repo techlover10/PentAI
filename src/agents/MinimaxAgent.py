@@ -49,12 +49,12 @@ class MinimaxAgent:
         state_val = [0, 0, 0] # players are 1 and 2, 0 index is 0"""
         for (r,c) in board.empty_adjacent:
             if (check_win(board, r, c, other_pid)):
-                #print('win possible at ' + str(r) + ', ' + str(c) + ' with player ' + str(other_pid))
+                print('win possible at ' + str(r) + ', ' + str(c) + ' with player ' + str(other_pid))
                 return -1000
-            """if (check_win(board, r, c, pid)):
+            if (check_win(board, r, c, pid)):
                 print('win possible at ' + str(r) + ', ' + str(c) + ' with player ' + str(pid))
                 return 1000
-            other_raw = heuristic_count(board, r, c, other_pid)
+            """other_raw = heuristic_count(board, r, c, other_pid)
             curr_raw = heuristic_count(board, r, c, pid)
             for key in curr_raw.keys():
                 count = curr_raw[key]
@@ -80,14 +80,14 @@ class MinimaxAgent:
         #print('minimaxing\n')
         other_player = 1
         if (player == 1):
-            other_player = 1
+            other_player = 2
 
         if bound == 0:
             return self.value_state(board, player)
-        #if check_win(board, *coord, player):
-            #return 1000
-        #if check_win(board, *coord, other_player):
-            #return -1000
+        if check_win(board, *coord, other_player):
+            return -1000
+        if check_win(board, *coord, player):
+            return 1000
         
         CURR_MAX = -100
         for (r,c) in board.empty_adjacent:
@@ -108,10 +108,10 @@ class MinimaxAgent:
 
         if bound == 0:
             return self.value_state(board, player)
-        #if check_win(board, *coord, player):
-            #return 1000
-        #if check_win(board, *coord, other_player):
-            #return -1000
+        if check_win(board, *coord, other_player):
+            return -1000
+        if check_win(board, *coord, player):
+            return 1000
 
         CURR_MIN = 100
         for (r,c) in board.empty_adjacent:

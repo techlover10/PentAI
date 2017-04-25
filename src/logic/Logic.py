@@ -42,16 +42,21 @@ def line_count(board, r, c, direction, player):
 def check_win(board, r, c, player):
     #print("checking win: " + str(r) + ',' + str(c))
     if line_count(board, r, c-1, 'l', player) + line_count(board, r, c+1, 'r', player) + 1 >= 5:
+        print("left")
         return True
     if line_count(board, r+1, c-1, 'dl', player) + line_count(board, r-1, c+1, 'ur', player) + 1 >= 5:
+        print("bottom left")
         return True
     if line_count(board, r-1, c-1, 'ul', player) + line_count(board, r+1, c+1, 'dr', player) + 1 >= 5:
+        print("top left")
         return True
     if line_count(board, r-1, c, 'u', player) + line_count(board, r+1, c, 'd', player) + 1 >= 5:
+        print("up")
         return True
     result = check_capture(board, r, c, player)
     board.captures[player] = board.captures[player] + result
     if (board.get_captures(player)) >= 5:
+        print("captures")
         return True
 
     return False
