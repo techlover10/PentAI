@@ -30,8 +30,8 @@ class MinimaxAgent:
                 new_board = deepcopy(board)
                 new_board.play(pid, *item)
                 value = self.maximin(new_board, 2, item, pid)
-                print("value " + str(value))
-                print("position " + str(item));
+                #print("value " + str(value))
+                #print("position " + str(item));
                 if value not in moves.keys():
                     moves[value] = []
                 moves[value].append(item)
@@ -45,8 +45,8 @@ class MinimaxAgent:
             curr_raw = heuristic_count(board, r, c)
             for key in curr_raw.keys():
                 count = curr_raw[key]
-                print((r,c))
-                print(curr_raw)
+                #print((r,c))
+                #print(curr_raw)
                 if key in self.H_VALS.keys():
                     state_val += self.H_VALS[key]*bound_scale
                 else:
@@ -62,8 +62,13 @@ class MinimaxAgent:
         if (player == 1):
             other_player = 2
 
-        if bound == 0 or check_win(board, *coord, player) or check_win(board, *coord, other_player):
+        if bound == 0:
             return self.value_state(board, player, bound)
+
+        if check_win(board, *coord, other_player):
+            return -1000
+        if check_win(board, *coord, player):
+            return -1000
 
         CURR_MAX = 0
 
@@ -84,6 +89,11 @@ class MinimaxAgent:
 
         if bound == 0:
             return self.value_state(board, player)
+
+        if check_win(board, *coord, other_player):
+            return 1000
+        if check_win(board, *coord, player):
+            return 1000
 
         CURR_MIN = float('inf')
         for (r,c) in board.empty_adjacent:
