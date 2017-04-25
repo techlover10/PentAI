@@ -61,7 +61,8 @@ def check_win(board, r, c, player):
 
     return False
 
-def heuristic_count(board, r, c, player):
+def heuristic_count(board, r, c):
+    player = board.get_piece(r,c)
     counts = {
         'horizontal': line_count(board, r, c-1, 'l', player) + line_count(board, r, c+1, 'r', player) + 1,
         'top_right': line_count(board, r+1, c-1, 'dl', player) + line_count(board, r-1, c+1, 'ur', player) + 1,
