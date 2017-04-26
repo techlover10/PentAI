@@ -24,6 +24,7 @@ class MinimaxAgent:
             move = (math.floor(random.random()*18), math.floor(random.random()*18))
             return move
         else:
+            #a= (math.floor(random.random()*18), math.floor(random.random()*18))
             a = self.pentemax(board)
             print('returning ' + str(a))
             return a
@@ -47,67 +48,65 @@ class MinimaxAgent:
         return state_val 
 
     def pentemax(self, board):
-            val1 = self.value_state(board, 1)
-            val2 = self.value_state(board, 2)
-            return self.max_move(board, 1 if val1 > val2 else 2)
-
-    def max_move(self, board, pid):
+        val1 = self.value_state(board, 1)
+        val2 = self.value_state(board, 2)
+        pid = 1 if val1 > val2 else 2
         max_val = -1
-        max_move = (math.floor(random.random()*18), math.floor(random.random()*18))
+        best_move = (-1, -1)
         for (r, c) in board.empty_adjacent:
-            new_val = self.value_state(deepcopy(board.play(pid, r, c)), pid)
+            new_val = self.value_state(deepcopy(board).play(pid, r, c), pid)
             if new_val > max_val:
                 max_val = new_val
-                max_move = (r, c)
-        return max_move
+                best_move = (r, c)
+        return best_move
 
 
-    def minimax(self, board, bound, coord, player):
-        #print('minimaxing\n')
-        other_player = 1
-        if (player == 1):
-            other_player = 2
+    #def minimax(self, board, bound, coord, player):
+    #    #print('minimaxing\n')
+    #    other_player = 1
+    #    if (player == 1):
+    #        other_player = 2
 
-        if bound == 0:
-            return self.value_state(board, player, bound)
+    #    if bound == 0:
+    #        return self.value_state(board, player, bound)
 
-        if check_win(board, *coord, other_player):
-            return -1000
-        if check_win(board, *coord, player):
-            return -1000
+    #    if check_win(board, *coord, other_player):
+    #        return -1000
+    #    if check_win(board, *coord, player):
+    #        return -1000
 
-        CURR_MAX = 0
+    #    CURR_MAX = 0
 
-        for (r,c) in board.empty_adjacent:
-            new_board = deepcopy(board)
-            new_board.play(player, r, c)
-            curr_val = self.maximin(new_board, bound - 1, (r, c), player)
-            if curr_val > CURR_MAX:
-                CURR_MAX = curr_val
-        #print("CURRMAX " + str(CURR_MAX) +"\n")
-        return CURR_MAX
+    #    for (r,c) in board.empty_adjacent:
+    #        new_board = deepcopy(board)
+    #        new_board.play(player, r, c)
+    #        curr_val = self.maximin(new_board, bound - 1, (r, c), player)
+    #        if curr_val > CURR_MAX:
+    #            CURR_MAX = curr_val
+    #    #print("CURRMAX " + str(CURR_MAX) +"\n")
+    #    return CURR_MAX
 
-    def maximin(self, board, bound, coord, player):
-        #print('maximining\n')
-        other_player = 1
-        if (player == 1):
-            other_player = 2
+    #def maximin(self, board, bound, coord, player):
+    #    #print('maximining\n')
+    #    other_player = 1
+    #    if (player == 1):
+    #        other_player = 2
 
-        if bound == 0:
-            return self.value_state(board, player)
+    #    if bound == 0:
+    #        return self.value_state(board, player)
 
-        if check_win(board, *coord, other_player):
-            return 1000
-        if check_win(board, *coord, player):
-            return 1000
+    #    if check_win(board, *coord, other_player):
+    #        return 1000
+    #    if check_win(board, *coord, player):
+    #        return 1000
 
-        CURR_MIN = float('inf')
-        for (r,c) in board.empty_adjacent:
-            new_board = deepcopy(board)
-            new_board.play(other_player, r, c)
-            curr_val = self.minimax(new_board, bound - 1, (r, c), player)
-            if curr_val < CURR_MIN:
-                CURR_MIN = curr_val
-        #print("CURRMIN " + str(CURR_MIN) +"\n")
-        return CURR_MIN
+    #    CURR_MIN = float('inf')
+    #    for (r,c) in board.empty_adjacent:
+    #        new_board = deepcopy(board)
+    #        new_board.play(other_player, r, c)
+    #        curr_val = self.minimax(new_board, bound - 1, (r, c), player)
+    #        if curr_val < CURR_MIN:
+    #            CURR_MIN = curr_val
+    #    #print("CURRMIN " + str(CURR_MIN) +"\n")
+    #    return CURR_MIN
 
