@@ -56,8 +56,6 @@ class MinimaxAgent:
         return state_val 
 
     def pentemax(self, board, bound, coord, pid):
-        print('evaluating')
-        print(coord)
         other_player = 1 if pid is 2 else 2
         if bound == 0:
             val1 = self.value_state(board, 1)
@@ -70,7 +68,7 @@ class MinimaxAgent:
                 max_val = -1
                 # I am strictly closer to winning, move towards a win state
                 for (r, c) in board.empty_adjacent:
-                    new_val = self.pentemax(deepcopy(board.play(pid, r, c)), bound-1, (r,c), other_player)
+                    new_val = self.pentemax(deepcopy(board).play(pid, r, c), bound-1, (r,c), other_player)
                     if new_val > max_val:
                         max_val = new_val
             else:
@@ -79,14 +77,14 @@ class MinimaxAgent:
                 for (r, c) in board.empty_adjacent:
                     # Test the value if the other player played there and we continued - higher values for
                     # the other player are also better for you
-                    new_val = self.pentemax(deepcopy(board.play(other_player, r, c)), bound-1, (r,c), pid)
+                    new_val = self.pentemax(deepcopy(board).play(other_player, r, c), bound-1, (r,c), pid)
                     if new_val > max_val:
                         max_val = new_val
 
     def max_move_val(self, board, pid):
         max_val = -1
         for (r, c) in board.empty_adjacent:
-            new_val = self.value_state(deepcopy(board.play(pid, r, c)), pid)
+            new_val = self.value_state(deepcopy(board).play(pid, r, c), pid)
             if new_val > max_val:
                 max_val = new_val
         return max_val
