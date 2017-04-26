@@ -24,18 +24,10 @@ class MinimaxAgent:
             move = (math.floor(random.random()*18), math.floor(random.random()*18))
             return move
         else:
-            moves = {}
-            best_move = (-1, -1)
-            for item in board.empty_adjacent:
-                new_board = deepcopy(board)
-                new_board.play(pid, *item)
-                value = self.pentemax(new_board, 1, item, pid)
-                #print("value " + str(value))
-                #print("position " + str(item));
-                if value not in moves.keys():
-                    moves[value] = []
-                moves[value].append(item)
-            return random.choice(moves[max(moves.keys())])
+            print('get move called')
+            a = self.pentemax(board)
+            print('returning ' + str(a))
+            return self.pentemax(board)
 
     def value_state(self, board, pid):
         other_pid = 2 if pid is 1 else 1
@@ -55,41 +47,20 @@ class MinimaxAgent:
                         state_val += 1000 # not in dict, must be greater than 5
         return state_val 
 
-    def pentemax(self, board, bound, coord, pid):
-        print('evaluating')
-        print(coord)
-        other_player = 1 if pid is 2 else 2
-        if bound == 0:
+    def pentemax(self, board):
             val1 = self.value_state(board, 1)
             val2 = self.value_state(board, 2)
-            return self.max_move_val(board, 1 if val1 > val2 else 2)
-        else:
-            val1 = self.value_state(board, pid)
-            val2 = self.value_state(board, other_player)
-            if val1 > val2:
-                max_val = -1
-                # I am strictly closer to winning, move towards a win state
-                for (r, c) in board.empty_adjacent:
-                    new_val = self.pentemax(deepcopy(board.play(pid, r, c)), bound-1, (r,c), other_player)
-                    if new_val > max_val:
-                        max_val = new_val
-            else:
-                max_val = -1
-                # Opponent is closer to winning, block
-                for (r, c) in board.empty_adjacent:
-                    # Test the value if the other player played there and we continued - higher values for
-                    # the other player are also better for you
-                    new_val = self.pentemax(deepcopy(board.play(other_player, r, c)), bound-1, (r,c), pid)
-                    if new_val > max_val:
-                        max_val = new_val
+            return self.max_move(board, 1 if val1 > val2 else 2)
 
-    def max_move_val(self, board, pid):
+    def max_move(self, board, pid):
         max_val = -1
+        max_move = (math.floor(random.random()*18), math.floor(random.random()*18))
         for (r, c) in board.empty_adjacent:
             new_val = self.value_state(deepcopy(board.play(pid, r, c)), pid)
             if new_val > max_val:
                 max_val = new_val
-        return max_val
+                max_move = (r, c)
+        return max_move
 
 
     def minimax(self, board, bound, coord, player):
