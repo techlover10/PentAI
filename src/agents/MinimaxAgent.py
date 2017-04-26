@@ -29,7 +29,7 @@ class MinimaxAgent:
             for item in board.empty_adjacent:
                 new_board = deepcopy(board)
                 new_board.play(pid, *item)
-                value = self.maximin(new_board, 2, item, pid)
+                value = self.pentemax(new_board, 1, item, pid)
                 #print("value " + str(value))
                 #print("position " + str(item));
                 if value not in moves.keys():
@@ -55,12 +55,14 @@ class MinimaxAgent:
                         state_val += 1000 # not in dict, must be greater than 5
         return state_val 
 
-    def pentemax(self, board, bound, coord, player):
+    def pentemax(self, board, bound, coord, pid):
+        print('evaluating')
+        print(coord)
         other_player = 1 if pid is 2 else 2
         if bound == 0:
             val1 = self.value_state(board, 1)
             val2 = self.value_state(board, 2)
-            return max_move_val(self, board, max(val1, val2))
+            return self.max_move_val(board, 1 if val1 > val2 else 2)
         else:
             val1 = self.value_state(board, pid)
             val2 = self.value_state(board, other_player)
@@ -81,12 +83,13 @@ class MinimaxAgent:
                     if new_val > max_val:
                         max_val = new_val
 
-    def max_move(self, board, pid):
+    def max_move_val(self, board, pid):
         max_val = -1
         for (r, c) in board.empty_adjacent:
             new_val = self.value_state(deepcopy(board.play(pid, r, c)), pid)
             if new_val > max_val:
                 max_val = new_val
+        return max_val
 
 
     def minimax(self, board, bound, coord, player):
