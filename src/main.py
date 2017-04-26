@@ -75,8 +75,8 @@ while cmd != 'exit':
                 # Both players are human
                 current_game = game.Game()
             if current_game:
-                current_game.start_game()
                 print("Game started.  Player 1 goes first!")
+                current_game.start_game()
     # Active session commands only
     elif current_game and current_game.session_active:
         if cmd[0] == 'board':
