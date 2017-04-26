@@ -24,10 +24,9 @@ class MinimaxAgent:
             move = (math.floor(random.random()*18), math.floor(random.random()*18))
             return move
         else:
-            print('get move called')
             a = self.pentemax(board)
             print('returning ' + str(a))
-            return self.pentemax(board)
+            return a
 
     def value_state(self, board, pid):
         other_pid = 2 if pid is 1 else 1
