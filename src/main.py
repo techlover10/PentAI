@@ -7,7 +7,7 @@
 
 from terminal import Printer
 import game.Game as game
-import agents.MinimaxAgent as MinimaxAgent
+import importlib
 
 session = Printer.Printer()
 
@@ -49,17 +49,34 @@ while cmd != 'exit':
         if current_game and current_game.session_active:
             print('Game already started!')
         else:
+            agentstr = 'agents.'
             if len(cmd) >2:
                 # Both players are AI
-                current_game = game.Game(MinimaxAgent.MinimaxAgent(), MinimaxAgent.MinimaxAgent())
+                try:
+                    agent_pkg1 = importlib.import_module(agentstr + cmd[1])
+                except ImportError as e:
+                    print("Invalid agent name: " + cmd[1])
+                try:
+                    agent_pkg2 = importlib.import_module(agentstr + cmd[2])
+                    agent1 = agent_pkg1.Agent()
+                    agent2 = agent_pkg2.Agent()
+                    current_game = game.Game(agent1, agent2)
+                except ImportError as e:
+                    print("Invalid agent name: " + cmd[2])
             elif len(cmd) >1:
                 # Player 1 is an AI, player 2 is human
-                current_game = game.Game(MinimaxAgent.MinimaxAgent())
+                try:
+                    agent_pkg1 = importlib.import_module(agentstr + cmd[1])
+                    agent1 = agent_pkg1.Agent()
+                    current_game = game.Game(agent1)
+                except ImportError as e:
+                    print("Invalid agent name: " + cmd[1])
             else:
                 # Both players are human
                 current_game = game.Game()
-            current_game.start_game()
-            print("Game started.  Player 1 goes first!")
+            if current_game:
+                current_game.start_game()
+                print("Game started.  Player 1 goes first!")
     # Active session commands only
     elif current_game and current_game.session_active:
         if cmd[0] == 'board':
