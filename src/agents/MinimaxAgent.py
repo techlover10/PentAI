@@ -12,11 +12,11 @@ class MinimaxAgent:
     def __init__(self):
         self.H_VALS = {
                 1: 0,
-                2: 1,
-                3: 2,
-                4: 3,
-                5: 1000,
-                'capture': 2
+                2: 5,
+                3: 20,
+                4: 50,
+                5: 100,
+                'capture': 10
                 }
 
     def get_move(self, pid, board):
