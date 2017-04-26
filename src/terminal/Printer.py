@@ -6,7 +6,7 @@
 
 import os, math
 
-PCOL = '\033[92m'
+PCOL = ['\033[92m','\033[91m']
 ENDC = '\033[0m'
 
 class Printer:
@@ -66,7 +66,7 @@ class Printer:
             for column in row:
                 colidx += 1
                 curr_str += ''
-                curr_str = curr_str + ((' ' + str(colidx) if colidx < 10 else str(colidx))  if column is 0 else PCOL + 'P' + str(column)) + ENDC + '|'
+                curr_str = curr_str + ((' ' + str(colidx) if colidx < 10 else str(colidx))  if column is 0 else PCOL[column-1] + 'P' + str(column)) + ENDC + '|'
             #print(topstr)
             print(curr_str)
             print(botstr)
