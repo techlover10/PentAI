@@ -101,6 +101,9 @@ while cmd != 'exit':
             new_agent = MinimaxAgent.MinimaxAgent()
             print("Heuristic value for player " + str(current_game.current_turn))
             print(new_agent.value_state(current_game.board, current_game.current_turn))
+
+        elif cmd[0] == 'reset':
+            current_game.reset()
             
 
     elif cmd[0] in possible_cmds:
