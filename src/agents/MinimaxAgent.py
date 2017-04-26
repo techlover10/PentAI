@@ -8,7 +8,7 @@ from logic.Logic import heuristic_count, check_win
 from copy import copy, deepcopy
 import random, math
 
-class MinimaxAgent:
+class Agent:
     def __init__(self):
         self.H_VALS = {
                 1: 0,
