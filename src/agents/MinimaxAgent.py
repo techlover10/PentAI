@@ -37,24 +37,57 @@ class MinimaxAgent:
                 moves[value].append(item)
             return random.choice(moves[max(moves.keys())])
 
-    def value_state(self, board, pid, bound=0):
-        bound_scale = bound+1
+    def value_state(self, board, pid):
         other_pid = 2 if pid is 1 else 1
         state_val = 0
         for (r,c) in board.occupied:
-            curr_raw = heuristic_count(board, r, c)
+            curr_raw = heuristic_count(board, r, c, pid)
             for key in curr_raw.keys():
                 count = curr_raw[key]
                 #print((r,c))
                 #print(curr_raw)
                 if key in self.H_VALS.keys():
-                    state_val += self.H_VALS[key]*bound_scale
+                    state_val += self.H_VALS[key]
                 else:
                     if count in self.H_VALS.keys():
                         state_val += self.H_VALS[count]
                     else:
                         state_val += 1000 # not in dict, must be greater than 5
         return state_val 
+
+    def pentemax(self, board, bound, coord, player):
+        other_player = 1 if pid is 2 else 2
+        if bound == 0:
+            val1 = self.value_state(board, 1)
+            val2 = self.value_state(board, 2)
+            return max_move_val(self, board, max(val1, val2))
+        else:
+            val1 = self.value_state(board, pid)
+            val2 = self.value_state(board, other_player)
+            if val1 > val2:
+                max_val = -1
+                # I am strictly closer to winning, move towards a win state
+                for (r, c) in board.empty_adjacent:
+                    new_val = self.pentemax(deepcopy(board.play(pid, r, c)), bound-1, (r,c), other_player)
+                    if new_val > max_val:
+                        max_val = new_val
+            else:
+                max_val = -1
+                # Opponent is closer to winning, block
+                for (r, c) in board.empty_adjacent:
+                    # Test the value if the other player played there and we continued - higher values for
+                    # the other player are also better for you
+                    new_val = self.pentemax(deepcopy(board.play(other_player, r, c)), bound-1, (r,c), pid)
+                    if new_val > max_val:
+                        max_val = new_val
+
+    def max_move(self, board, pid):
+        max_val = -1
+        for (r, c) in board.empty_adjacent:
+            new_val = self.value_state(deepcopy(board.play(pid, r, c)), pid)
+            if new_val > max_val:
+                max_val = new_val
+
 
     def minimax(self, board, bound, coord, player):
         #print('minimaxing\n')
