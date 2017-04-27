@@ -26,7 +26,7 @@ class Agent:
         else:
             #a= (math.floor(random.random()*18), math.floor(random.random()*18))
             a = self.pentemax(board, 2)[0]
-            print('returning ' + str(a))
+            #print('returning ' + str(a))
             return a
 
     def value_state(self, board, pid):

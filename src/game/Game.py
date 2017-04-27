@@ -14,23 +14,27 @@ class Game:
         self.session_active = False
         self.current_turn = 1 # start with player 1
         self.has_win = False
+        self.winner = -1
         self.agents = [None, agent1, agent2]
 
     def start_game(self):
         self.session_active = True
         self.run_game()
+        return self.winner
 
     def reset(self):
         self.board = Board.Board()
         self.session_active = False
         self.current_turn = 1
+        self.has_win = False
+        self.winner = -1
 
     # Game will run until it is a human's turn
     def run_game(self):
         is_run = False
         while self.agents[self.current_turn] and self.session_active and (not self.has_win):
             is_run = True
-            print("agent " + str(self.current_turn) + " is playing")
+            #print("agent " + str(self.current_turn) + " is playing")
             self.play(*self.agents[self.current_turn].get_move(self.current_turn, self.board))
         return is_run
 
@@ -49,6 +53,7 @@ class Game:
 
         if Logic.check_win(self.board, r, c, self.current_turn):
             print("Player " + str(self.current_turn) + ' wins!')
+            self.winner = self.current_turn
             print("Game ended.")
             self.has_win = True
             return

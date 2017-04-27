@@ -46,11 +46,16 @@ while cmd != 'exit':
         session.print_sep()
 
     elif cmd[0] == 'start':
+        loop = False
+        iters = 1
         if current_game and current_game.session_active:
             print('Game already started!')
         else:
             agentstr = 'agents.'
             if len(cmd) >2:
+                if len(cmd) > 3:
+                    loop = True
+                    iters = int(cmd[3])
                 # Both players are AI
                 try:
                     agent_pkg1 = importlib.import_module(agentstr + cmd[1])
@@ -74,7 +79,17 @@ while cmd != 'exit':
             else:
                 # Both players are human
                 current_game = game.Game()
-            if current_game:
+            if loop:
+                winners = {1: 0, 2: 0}
+                for i in range (0, iters):
+                    winner = current_game.start_game()
+                    if winner > 0:
+                        winners[winner] += 1
+                    #session.board_printer(current_game.board)
+                    current_game.reset()
+                    current_game = game.Game(agent1, agent2)
+                print(winners)
+            elif current_game:
                 print("Game started.  Player 1 goes first!")
                 current_game.start_game()
     # Active session commands only
