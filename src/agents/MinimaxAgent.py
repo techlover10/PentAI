@@ -8,7 +8,7 @@ from logic.Logic import heuristic_count, check_win
 from copy import copy, deepcopy
 import random, math
 
-class MinimaxAgent:
+class Agent:
     def __init__(self):
         self.H_VALS = {
                 1: 0,
@@ -25,8 +25,8 @@ class MinimaxAgent:
             return move
         else:
             #a= (math.floor(random.random()*18), math.floor(random.random()*18))
-            a = self.pentemax(board, 3)[0]
-            print('returning ' + str(a))
+            a = self.pentemax(board, 2)[0]
+            #print('returning ' + str(a))
             return a
 
     def value_state(self, board, pid):
