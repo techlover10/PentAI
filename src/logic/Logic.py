@@ -12,45 +12,48 @@
 # direction can be one of 'l', 'r', 'u', 'd', 'ul',
 # 'ur', 'dl', 'dr'
 def line_count(board, r, c, direction, player):
-
+    other_player = 2 if player is 1 else 1
     # base cases
     if r < 0 or r >= 19 or c < 0 or c >= 19:
-        return 0
+        return (0, False)
     if board.get_piece(r, c) != player:
-        return 0
-
+        if board.get_piece(r, c) == other_player:
+            print("true")
+            return (0, True)
+        return (0, False)
     # Note: board is indexed with origin being the top left corner 
     # with coordinates (0,0), toplevel gameplay is 1-adjusted
     if direction == 'l':
-        return 1 + line_count(board, r, c-1, direction, player)
+        return (1 + line_count(board, r, c-1, direction, player)[0], False)
     if direction == 'r':
-        return 1 + line_count(board, r, c+1, direction, player)
+        return (1 + line_count(board, r, c+1, direction, player)[0], False)
     if direction == 'u':
-        return 1 + line_count(board, r-1, c, direction, player)
+        return (1 + line_count(board, r-1, c, direction, player)[0], False)
     if direction == 'd':
-        return 1 + line_count(board, r+1, c, direction, player)
+        return (1 + line_count(board, r+1, c, direction, player)[0], False)
     if direction == 'ul':
-        return 1 + line_count(board, r-1, c-1, direction, player)
+        return (1 + line_count(board, r-1, c-1, direction, player)[0], False)
     if direction == 'ur':
-        return 1 + line_count(board, r-1, c+1, direction, player)
+        return (1 + line_count(board, r-1, c+1, direction, player)[0], False)
     if direction == 'dl':
-        return 1 + line_count(board, r+1, c-1, direction, player)
+        return (1 + line_count(board, r+1, c-1, direction, player)[0], False)
     if direction == 'dr':
-        return 1 + line_count(board, r+1, c+1, direction, player)
+        return (1 + line_count(board, r+1, c+1, direction, player)[0], False)
 
 # Main function for checking for win
 def check_win(board, r, c, player):
+
     #print("checking win: " + str(r) + ',' + str(c))
-    if line_count(board, r, c-1, 'l', player) + line_count(board, r, c+1, 'r', player) + 1 >= 5:
+    if line_count(board, r, c-1, 'l', player)[0] + line_count(board, r, c+1, 'r', player)[0] + 1 >= 5:
         #print("left")
         return True
-    if line_count(board, r+1, c-1, 'dl', player) + line_count(board, r-1, c+1, 'ur', player) + 1 >= 5:
+    if line_count(board, r+1, c-1, 'dl', player)[0] + line_count(board, r-1, c+1, 'ur', player)[0] + 1 >= 5:
         #print("bottom left")
         return True
-    if line_count(board, r-1, c-1, 'ul', player) + line_count(board, r+1, c+1, 'dr', player) + 1 >= 5:
+    if line_count(board, r-1, c-1, 'ul', player)[0] + line_count(board, r+1, c+1, 'dr', player)[0] + 1 >= 5:
         #print("top left")
         return True
-    if line_count(board, r-1, c, 'u', player) + line_count(board, r+1, c, 'd', player) + 1 >= 5:
+    if line_count(board, r-1, c, 'u', player)[0] + line_count(board, r+1, c, 'd', player)[0] + 1 >= 5:
         #print("up")
         return True
     result = check_capture(board, r, c, player)
@@ -62,11 +65,48 @@ def check_win(board, r, c, player):
     return False
 
 def heuristic_count(board, r, c, player):
+    other_player = 2 if player is 1 else 1
+
+    left = line_count(board, r, c-1, 'l', player)
+    right = line_count(board, r, c+1, 'r', player)
+
+    horizontal = left[0] + right[0] + 1
+    if left[1] and right[1]:
+        print("hi mom")
+        print("left" + str(left[1]))
+        print("right" + str(right[1]))
+        
+        horizontal = 0
+    
+    down_left = line_count(board, r+1, c-1, 'dl', player)
+    up_right = line_count(board, r-1, c+1, 'ur', player)
+        
+    top_right = down_left[0] + up_right[0] + 1
+    if down_left[1] and up_right[1]:
+        print("hi mom")
+        top_right = 0
+
+    up_left = line_count(board, r-1, c-1, 'ul', player)
+    down_right = line_count(board, r+1, c+1, 'dr', player)
+
+    top_left = up_left[0] + down_right[0] + 1
+    if up_left[1] and down_right[1]:
+        print("hi mom")
+        top_left = 0
+
+    up = line_count(board, r-1, c, 'u', player)
+    down = line_count(board, r+1, c, 'd', player)
+
+    vertical = up[0] + down[0] + 1
+    if up[1] and down[1]:
+        print("hi mom")
+        vertical = 0
+
     counts = {
-        'horizontal': line_count(board, r, c-1, 'l', player) + line_count(board, r, c+1, 'r', player) + 1,
-        'top_right': line_count(board, r+1, c-1, 'dl', player) + line_count(board, r-1, c+1, 'ur', player) + 1,
-        'top_left': line_count(board, r-1, c-1, 'ul', player) + line_count(board, r+1, c+1, 'dr', player) + 1,
-        'vertical': line_count(board, r-1, c, 'u', player) + line_count(board, r+1, c, 'd', player) + 1,
+        'horizontal': horizontal,
+        'top_right': top_right,
+        'top_left': top_left,
+        'vertical': vertical,
         'capture': check_capture(board, r, c, player) + board.captures[player]
         }
     return counts

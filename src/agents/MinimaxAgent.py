@@ -25,7 +25,7 @@ class MinimaxAgent:
             return move
         else:
             #a= (math.floor(random.random()*18), math.floor(random.random()*18))
-            a = self.pentemax(board, 2)[0]
+            a = self.pentemax(board, 3)[0]
             print('returning ' + str(a))
             return a
 
@@ -65,7 +65,7 @@ class MinimaxAgent:
                 new_val = self.value_state(deepcopy(board).play(pid, r, c), pid)
                 pentemax_max_val = -1
                 if new_val > max_val:
-                    pentemax_max_val_curr = self.pentemax(deepcopy(board).play(pid, r, c), recursion-1)[1]
+                    pentemax_max_val_curr = self.pentemax(deepcopy(board).play(pid, r, c), recursion-1)[1] * recursion
                     if pentemax_max_val_curr > pentemax_max_val:
                         max_val = new_val
                         best_move = (r, c)

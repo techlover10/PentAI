@@ -26,7 +26,8 @@ possible_cmds = {
         'play': 'Plays a piece.  Game will alternate between players automatically.  Game board is 1-indexed.',
         'captures': "Displays the state of captures.  Enter 'captures X' to display the captures of player X.",
         'turn': "Displays the player of the current turn",
-        'state_val': "Displays the value of the current state for the current player"
+        'state_val': "Displays the value of the current state for the current player",
+        'heuristic': "Displays heuristic for given r c player"
         }
 
 session.print_heading(welcome)
@@ -84,6 +85,8 @@ while cmd != 'exit':
             new_agent = MinimaxAgent.MinimaxAgent()
             print("Heuristic value for player " + str(current_game.current_turn))
             print(new_agent.value_state(current_game.board, current_game.current_turn))
+        elif cmd[0] == 'heuristic':
+            session.print_heuristic(current_game.board, int(cmd[1]), int(cmd[2]), int(cmd[3]))
             
 
     elif cmd[0] in possible_cmds:
