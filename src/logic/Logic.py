@@ -22,22 +22,24 @@ def line_count(board, r, c, direction, player):
         return (0, False)
     # Note: board is indexed with origin being the top left corner 
     # with coordinates (0,0), toplevel gameplay is 1-adjusted
+    count = 0
     if direction == 'l':
-        return (1 + line_count(board, r, c-1, direction, player)[0], False)
+        count = line_count(board, r, c-1, direction, player)
     if direction == 'r':
-        return (1 + line_count(board, r, c+1, direction, player)[0], False)
+        count = line_count(board, r, c+1, direction, player)
     if direction == 'u':
-        return (1 + line_count(board, r-1, c, direction, player)[0], False)
+        count = line_count(board, r-1, c, direction, player)
     if direction == 'd':
-        return (1 + line_count(board, r+1, c, direction, player)[0], False)
+        count = line_count(board, r+1, c, direction, player)
     if direction == 'ul':
-        return (1 + line_count(board, r-1, c-1, direction, player)[0], False)
+        count = line_count(board, r-1, c-1, direction, player)
     if direction == 'ur':
-        return (1 + line_count(board, r-1, c+1, direction, player)[0], False)
+        count = line_count(board, r-1, c+1, direction, player)
     if direction == 'dl':
-        return (1 + line_count(board, r+1, c-1, direction, player)[0], False)
+        count = line_count(board, r+1, c-1, direction, player)
     if direction == 'dr':
-        return (1 + line_count(board, r+1, c+1, direction, player)[0], False)
+        count = line_count(board, r+1, c+1, direction, player)
+    return (1 + count[0], count[1])
 
 # Main function for checking for win
 def check_win(board, r, c, player):
