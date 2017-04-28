@@ -18,7 +18,6 @@ def line_count(board, r, c, direction, player):
         return (0, False)
     if board.get_piece(r, c) != player:
         if board.get_piece(r, c) == other_player:
-            print("true")
             return (0, True)
         return (0, False)
     # Note: board is indexed with origin being the top left corner 
