@@ -72,10 +72,6 @@ def heuristic_count(board, r, c, player):
 
     horizontal = left[0] + right[0] + 1
     if left[1] and right[1]:
-        print("hi mom")
-        print("left" + str(left[1]))
-        print("right" + str(right[1]))
-        
         horizontal = 0
     
     down_left = line_count(board, r+1, c-1, 'dl', player)
@@ -83,7 +79,6 @@ def heuristic_count(board, r, c, player):
         
     top_right = down_left[0] + up_right[0] + 1
     if down_left[1] and up_right[1]:
-        print("hi mom")
         top_right = 0
 
     up_left = line_count(board, r-1, c-1, 'ul', player)
@@ -91,7 +86,6 @@ def heuristic_count(board, r, c, player):
 
     top_left = up_left[0] + down_right[0] + 1
     if up_left[1] and down_right[1]:
-        print("hi mom")
         top_left = 0
 
     up = line_count(board, r-1, c, 'u', player)
@@ -99,7 +93,6 @@ def heuristic_count(board, r, c, player):
 
     vertical = up[0] + down[0] + 1
     if up[1] and down[1]:
-        print("hi mom")
         vertical = 0
 
     counts = {
