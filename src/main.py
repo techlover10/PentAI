@@ -83,7 +83,11 @@ while cmd != 'exit':
             session.board_printer(current_game.board)
         
         elif nargs >= 3 and cmd[0] == 'play':
-            current_game.play(int(cmd[1])-1, int(cmd[2])-1)
+            try:
+                current_game.play(int(cmd[1])-1, int(cmd[2])-1)
+            except:
+                print("Invalid position specified.")
+
 
         elif nargs <3 and cmd[0] == 'play':
             print("Invalid position specified.")
