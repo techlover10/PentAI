@@ -7,6 +7,7 @@
 import game.Board as Board
 import logic.Logic as Logic
 import agents.MinimaxAgent as MinimaxAgent
+from copy import copy, deepcopy
 
 class Game:
     def __init__(self, agent1=None, agent2=None):
@@ -16,6 +17,9 @@ class Game:
         self.has_win = False
         self.winner = -1
         self.agents = [None, agent1, agent2]
+        # DEBUG stuff: code to explode to find the board error
+
+        self.past_board = None
 
     def start_game(self):
         self.session_active = True
@@ -49,7 +53,11 @@ class Game:
             print("Player " + str(self.current_turn) + "'s turn!")
             return
 
+        self.past_board = deepcopy(self.board)
+
         self.board.play(self.current_turn, r, c)
+
+        self.board_verify() # Verify the current board
 
         if Logic.check_win(self.board, r, c, self.current_turn):
             print("Player " + str(self.current_turn) + ' wins!')
@@ -61,5 +69,24 @@ class Game:
         self.current_turn = 2 if self.current_turn is 1 else 1
         if not self.run_game():
             print("Player " + str(self.current_turn) + "'s turn!")
+
+    def board_verify(self):
+        removed = {1: 0, 2: 0}
+        for row in range(0, 19):
+            for col in range(0, 19):
+                piece = self.past_board.get_piece(row, col)
+                if piece != 0:
+                    if self.board.get_piece == 0:
+                        removed[piece] += 1
+        captures_old = {1: self.past_board.get_captures(1), 2: self.past_board.get_captures(2)}
+        captures_new = {1: self.board.get_captures(1), 2: self.board.get_captures(2)}
+        for key, value in removed.items():
+            opponent = 2 if key == 1 else 1
+            if value%2 != 0:
+                raise Exception("ERROR: ODD NUMBER OF PIECES REMOVED FROM THE BOARD")
+            if captures_new[opponent] != captures_old[opponent] + (value/2):
+                raise Exception("ERROR: INVALID KEY REMOVAL DETECTED $WAGMONEYYOLO420BLAZEIT")
+
+                    
 
 
