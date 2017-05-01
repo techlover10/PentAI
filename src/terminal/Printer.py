@@ -5,6 +5,7 @@
 # Helper functions for printing nicely
 
 import os, math
+from logic.Logic import heuristic_count
 
 PCOL = ['\033[92m','\033[91m']
 ENDC = '\033[0m'
@@ -77,5 +78,8 @@ class Printer:
         else:
             for i in game_board.captures:
                 print('Player ' + str(i) + ' has ' + str(game_board.captures[i]) + '.')
+
+    def print_heuristic(self, game_board, r, c, player):
+        print(str(heuristic_count(game_board, r, c, player)))
 
 
