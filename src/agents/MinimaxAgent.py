@@ -48,8 +48,8 @@ class Agent:
         return state_val 
 
     def pentemax(self, board, recursion):
-        val1 = self.value_state(board, 1)
-        val2 = self.value_state(board, 2)
+        val1 = self.value_state(deepcopy(board), 1)
+        val2 = self.value_state(deepcopy(board), 2)
         pid = 1 if val1 > val2 else 2
         max_val = -1
         best_move = (-1, -1)
