@@ -67,7 +67,7 @@ def check_win(board, r, c, player):
 
 def heuristic_count(board, r, c, player):
     other_player = 2 if player is 1 else 1
-    if board.get_piece(r, c) == other_player:
+    if board.get_piece(r, c) != player:
         horizontal = 0
         top_right = 0
         top_left = 0
@@ -112,60 +112,56 @@ def heuristic_count(board, r, c, player):
 
 def check_capture(board, r, c, player):
     result = 0
-    other_player = 0
-    if (player == 1):
-        other_player = 2
-    else:
-        other_player = 1
-    if (board.get_piece(r, c) == other_player):
+    other_player = 2 if player is 1 else 1
+    if (board.get_piece(r, c) != player):
         return result
     if (board.get_piece(r + 3, c) == player):
-        if (not board.spot_empty(r + 1, c) and board.get_piece(r + 1, c) == other_player 
-            and not board.spot_empty(r + 2, c) and board.get_piece(r + 2, c) == other_player):
+        if (board.get_piece(r + 1, c) == other_player and board.get_piece(r + 2, c) == other_player):
             board.piece_captured(r + 1, c)
             board.piece_captured(r + 2, c)
             result += 1 
+            print('1')
     if (board.get_piece(r - 3, c) == player):
-        if (not board.spot_empty(r - 1, c) and board.get_piece(r - 1, c) == other_player 
-            and not board.spot_empty(r - 2, c) and board.get_piece(r - 2, c) == other_player):
+        if (board.get_piece(r - 1, c) == other_player and board.get_piece(r - 2, c) == other_player):
             board.piece_captured(r - 1, c)
             board.piece_captured(r - 2, c)
-            result += 1 
+            result += 1
+            print('2') 
     if (board.get_piece(r, c + 3) == player):
-        if (not board.spot_empty(r, c + 1) and board.get_piece(r, c + 1) == other_player 
-            and not board.spot_empty(r, c + 2) and board.get_piece(r, c + 2) == other_player):
+        if (board.get_piece(r, c + 1) == other_player and board.get_piece(r, c + 2) == other_player):
             board.piece_captured(r, c + 1)
             board.piece_captured(r, c + 2)
-            result += 1 
+            result += 1
+            print('3') 
     if (board.get_piece(r, c - 3) == player):
-        if (not board.spot_empty(r, c - 1) and board.get_piece(r, c -1) == other_player 
-            and not board.spot_empty(r, c - 2) and board.get_piece(r, c - 2) == other_player):
+        if (board.get_piece(r, c -1) == other_player and board.get_piece(r, c - 2) == other_player):
             board.piece_captured(r, c - 1)
             board.piece_captured(r, c - 2)
-            result += 1 
+            result += 1
+            print('4') 
     if (board.get_piece(r + 3, c + 3) == player):
-        if (not board.spot_empty(r + 1, c + 1) and board.get_piece(r + 1, c + 1) == other_player 
-            and not board.spot_empty(r + 2, c +2) and board.get_piece(r + 2, c + 2) == other_player):
+        if (board.get_piece(r + 1, c + 1) == other_player and board.get_piece(r + 2, c + 2) == other_player):
             board.piece_captured(r + 1, c + 1)
             board.piece_captured(r + 2, c + 2)
-            result += 1 
+            result += 1
+            print('5') 
     if (board.get_piece(r - 3, c - 3) == player):
-        if (not board.spot_empty(r - 1, c - 1) and board.get_piece(r - 1, c - 1) == other_player 
-            and not board.spot_empty(r - 2, c - 2) and board.get_piece(r - 2, c - 2) == other_player):
+        if (board.get_piece(r - 1, c - 1) == other_player and board.get_piece(r - 2, c - 2) == other_player):
             board.piece_captured(r - 1, c - 1)
             board.piece_captured(r - 2, c - 2)
             result += 1
+            print('6')
     if (board.get_piece(r + 3, c - 3) == player):
-        if (not board.spot_empty(r + 1, c - 1) and board.get_piece(r + 1, c - 1) == other_player 
-            and not board.spot_empty(r + 2, c - 2) and board.get_piece(r + 2, c - 2) == other_player):
+        if (board.get_piece(r + 1, c - 1) == other_player and board.get_piece(r + 2, c - 2) == other_player):
             board.piece_captured(r + 1, c - 1)
             board.piece_captured(r + 2, c - 2)
-            result += 1  
+            result += 1
+            print('7')  
     if (board.get_piece(r - 3, c + 3) == player):
-        if (not board.spot_empty(r - 1, c + 1) and board.get_piece(r - 1, c + 1) == other_player 
-            and not board.spot_empty(r - 2, c + 2) and board.get_piece(r - 2, c + 2) == other_player):
+        if (board.get_piece(r - 1, c + 1) == other_player and board.get_piece(r - 2, c + 2) == other_player):
             board.piece_captured(r - 1, c + 1)
             board.piece_captured(r - 2, c + 2)
-            result += 1 
+            result += 1
+            print('8') 
     return result
 
