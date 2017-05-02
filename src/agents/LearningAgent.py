@@ -10,16 +10,17 @@ import random, math, json, os
 
 class Agent:
     def __init__(self):
+        self.is_learning = True # used to tag agent as needing an update
         self.ALPHA_VAL = 1
         self.prev_state = None
         self.H_VALS = {
                 0: 0,
-                1: 0,
-                2: 5,
-                3: 20,
-                4: 50,
-                5: 1000,
-                'capture': 10
+                1: 1,
+                2: 2,
+                3: 3,
+                4: 4,
+                5: 5,
+                'capture': 2
                 }
         self.load_heuristic_vals()
 
@@ -106,7 +107,7 @@ class Agent:
                         best_move = (r, c)
             return (best_move, max_val)
 
-    def update_heuristic_vals(self, board, pid):
+    def update_heuristic_vals(self, board, pid, win=False):
         curr_state = deepcopy(board)
         prev_state = deepcopy(self.prev_state)
 
@@ -118,30 +119,56 @@ class Agent:
             counts = self.heuristic_value_state(curr_state, other_pid)
         elif prev_val > curr_val:
             counts = self.heuristic_value_state(prev_state, pid)
+        else:
+            return
 
         # find out which feature led that move to be picked
         max_val = 0
         max_key = None
         for k, v in counts.items():
-            if v >= max_val:
+            if v >= max_val and k != "0":
                 max_val = v
                 max_key = k
 
+        # if no max key we don't know anything
+        if not max_key:
+            return
+
         # update max key with alpha
         acc = 0
+        if win:
+            alpha_val = self.ALPHA_VAL*4
+        else:
+            alpha_val = self.ALPHA_VAL
         for k in self.H_VALS.keys():
-            if self.H_VALS[k] - self.ALPHA_VAL > 0:
-                self.H_VALS[k] -= self.ALPHA_VAL
-                acc += self.ALPHA_VAL
+            if self.H_VALS[k] - alpha_val > 0:
+                self.H_VALS[k] -= alpha_val
+                acc += alpha_val
 
+        acc -= alpha_val
+
+        print(self.H_VALS)
         self.H_VALS[max_key] += acc
         self.write_heuristic_vals()
 
 
     def load_heuristic_vals(self):
-        if os.path.isfile('heuristic.json'):
-            self.H_VALS = json.loads(open('agents/heuristic.json').read())
+        def jsonKeys2str(x):
+            if isinstance(x, dict):
+                retval = {}
+                for k, v in x.items():
+                    try:
+                        retval[int(k)] = v
+                    except:
+                        retval[k] = v
+                return retval
+            return x
+        if os.path.isfile('agents/heuristic.json'):
+            self.H_VALS = json.loads(open('agents/heuristic.json').read(), object_hook=jsonKeys2str)
+            self.H_VALS[0] = 0
+
 
     def write_heuristic_vals(self):
+        print(json.dumps(self.H_VALS))
         open('agents/heuristic.json', 'w').write(json.dumps(self.H_VALS))
 

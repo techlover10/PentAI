@@ -10,6 +10,7 @@ import random, math
 
 class Agent:
     def __init__(self):
+        self.is_learning = False
         self.H_VALS = {
                 1: 0,
                 2: 5,

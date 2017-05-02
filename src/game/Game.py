@@ -62,6 +62,9 @@ class Game:
         if Logic.check_win(self.board, r, c, self.current_turn):
             print("Player " + str(self.current_turn) + ' wins!')
             self.winner = self.current_turn
+            other_player = 1 if self.current_turn is 2 else 1
+            if self.agents[other_player] and self.agents[other_player].is_learning:
+                self.agents[other_player].update_heuristic_vals(self.board, pid, win=True)
             print("Game ended.")
             self.has_win = True
             return
