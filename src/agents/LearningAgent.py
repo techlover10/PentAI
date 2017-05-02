@@ -110,11 +110,12 @@ class Agent:
         curr_state = deepcopy(board)
         prev_state = deepcopy(self.prev_state)
 
-        curr_val = self.value_state(curr_state, pid)
+        other_pid = 2 if pid is 1 else 1
+        curr_val = self.value_state(curr_state, other_pid)
         prev_val = self.value_state(prev_state, pid)
 
         if curr_val > prev_val:
-            counts = self.heuristic_value_state(curr_state, pid)
+            counts = self.heuristic_value_state(curr_state, other_pid)
         elif prev_val > curr_val:
             counts = self.heuristic_value_state(prev_state, pid)
 
