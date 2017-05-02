@@ -24,6 +24,7 @@ class Board:
 
         self.occupied = [] #list of occupied positions
         self.empty_adjacent = [] # list of empty spots adjacent to an occupied spot
+        self.captured_spaces = [] 
 
     def play(self, player, r, c):
         #print("playing " + str(r) + ', ' + str(c))
@@ -53,6 +54,7 @@ class Board:
         self.grid[r][c] = 0
         self.occupied.remove((r,c))
         self.empty_adjacent.append((r,c))
+        self.captured_spaces.append((r,c))
 
     def spot_empty(self, r, c):
         return self.get_piece(r, c) == 0

@@ -117,51 +117,51 @@ def check_capture(board, r, c, player):
         return result
     if (board.get_piece(r + 3, c) == player):
         if (board.get_piece(r + 1, c) == other_player and board.get_piece(r + 2, c) == other_player):
-            board.piece_captured(r + 1, c)
-            board.piece_captured(r + 2, c)
-            result += 1 
-            print('1')
+            if (r + 1, c) not in board.captured_spaces and (r + 2, c) not in board.captured_spaces: 
+                board.piece_captured(r + 1, c)
+                board.piece_captured(r + 2, c)
+                result += 1 
     if (board.get_piece(r - 3, c) == player):
         if (board.get_piece(r - 1, c) == other_player and board.get_piece(r - 2, c) == other_player):
-            board.piece_captured(r - 1, c)
-            board.piece_captured(r - 2, c)
-            result += 1
-            print('2') 
+            if (r - 1, c) not in board.captured_spaces and (r - 2, c) not in board.captured_spaces:
+                board.piece_captured(r - 1, c)
+                board.piece_captured(r - 2, c)
+                result += 1
     if (board.get_piece(r, c + 3) == player):
         if (board.get_piece(r, c + 1) == other_player and board.get_piece(r, c + 2) == other_player):
-            board.piece_captured(r, c + 1)
-            board.piece_captured(r, c + 2)
-            result += 1
-            print('3') 
+            if (r, c + 1) not in board.captured_spaces and (r, c + 2) not in board.captured_spaces:
+                board.piece_captured(r, c + 1)
+                board.piece_captured(r, c + 2)
+                result += 1 
     if (board.get_piece(r, c - 3) == player):
         if (board.get_piece(r, c -1) == other_player and board.get_piece(r, c - 2) == other_player):
-            board.piece_captured(r, c - 1)
-            board.piece_captured(r, c - 2)
-            result += 1
-            print('4') 
+            if (r, c - 1) not in board.captured_spaces and (r, c - 2) not in board.captured_spaces:
+                board.piece_captured(r, c - 1)
+                board.piece_captured(r, c - 2)
+                result += 1 
     if (board.get_piece(r + 3, c + 3) == player):
         if (board.get_piece(r + 1, c + 1) == other_player and board.get_piece(r + 2, c + 2) == other_player):
-            board.piece_captured(r + 1, c + 1)
-            board.piece_captured(r + 2, c + 2)
-            result += 1
-            print('5') 
+            if (r + 1, c + 1) not in board.captured_spaces and (r + 2, c + 2) not in board.captured_spaces: 
+                board.piece_captured(r + 1, c + 1)
+                board.piece_captured(r + 2, c + 2)
+                result += 1 
     if (board.get_piece(r - 3, c - 3) == player):
         if (board.get_piece(r - 1, c - 1) == other_player and board.get_piece(r - 2, c - 2) == other_player):
-            board.piece_captured(r - 1, c - 1)
-            board.piece_captured(r - 2, c - 2)
-            result += 1
-            print('6')
+            if (r - 1, c - 1) not in board.captured_spaces and (r - 2, c - 2) not in board.captured_spaces:
+                board.piece_captured(r - 1, c - 1)
+                board.piece_captured(r - 2, c - 2)
+                result += 1
     if (board.get_piece(r + 3, c - 3) == player):
         if (board.get_piece(r + 1, c - 1) == other_player and board.get_piece(r + 2, c - 2) == other_player):
-            board.piece_captured(r + 1, c - 1)
-            board.piece_captured(r + 2, c - 2)
-            result += 1
-            print('7')  
+            if (r + 1, c - 1) not in board.captured_spaces and (r + 2, c - 2) not in board.captured_spaces:
+                board.piece_captured(r + 1, c - 1)
+                board.piece_captured(r + 2, c - 2)
+                result += 1  
     if (board.get_piece(r - 3, c + 3) == player):
         if (board.get_piece(r - 1, c + 1) == other_player and board.get_piece(r - 2, c + 2) == other_player):
-            board.piece_captured(r - 1, c + 1)
-            board.piece_captured(r - 2, c + 2)
-            result += 1
-            print('8') 
+            if (r - 1, c + 1) not in board.captured_spaces and (r - 2, c + 2) not in board.captured_spaces:
+                board.piece_captured(r - 1, c + 1)
+                board.piece_captured(r - 2, c + 2)
+                result += 1 
     return result
 
