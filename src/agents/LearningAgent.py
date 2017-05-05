@@ -135,7 +135,6 @@ class Agent:
             return
 
         # update max key with alpha
-        print("increasing importance of row of " + str(max_key))
         acc = 0
         if win:
             alpha_val = self.ALPHA_VAL*4
@@ -150,6 +149,7 @@ class Agent:
         #acc = max(acc - alpha_val, 0)
 
         print(self.H_VALS)
+        # want to move importance up one because we're calculating on an old board somehow i think
         self.H_VALS[min(max_key+1, 5)] += alpha_val
         self.write_heuristic_vals()
 
