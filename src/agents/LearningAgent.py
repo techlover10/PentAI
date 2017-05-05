@@ -15,12 +15,12 @@ class Agent:
         self.prev_state = None
         self.H_VALS = {
                 0: 0,
-                1: 1,
-                2: 2,
-                3: 3,
-                4: 4,
-                5: 5,
-                'capture': 2
+                1: 0,
+                2: 0,
+                3: 1,
+                4: 1,
+                5: 500,
+                'capture': 5
                 }
         self.load_heuristic_vals()
 
@@ -126,8 +126,8 @@ class Agent:
         max_val = 0
         max_key = None
         for k, v in counts.items():
-            if v >= max_val and k != "0":
-                max_val = v
+            if k in self.H_VALS and v*self.H_VALS[k] >= max_val:
+                max_val = v*self.H_VALS[k]
                 max_key = k
 
         # if no max key we don't know anything
@@ -135,20 +135,22 @@ class Agent:
             return
 
         # update max key with alpha
+        print("increasing importance of row of " + str(max_key))
         acc = 0
         if win:
             alpha_val = self.ALPHA_VAL*4
         else:
             alpha_val = self.ALPHA_VAL
-        for k in self.H_VALS.keys():
-            if self.H_VALS[k] - alpha_val > 0:
-                self.H_VALS[k] -= alpha_val
-                acc += alpha_val
 
-        acc -= alpha_val
+        #for k in self.H_VALS.keys():
+        #    if self.H_VALS[k] - alpha_val > 0:
+        #        self.H_VALS[k] -= alpha_val
+        #        acc += alpha_val
+
+        #acc = max(acc - alpha_val, 0)
 
         print(self.H_VALS)
-        self.H_VALS[max_key] += acc
+        self.H_VALS[min(max_key+1, 5)] += alpha_val
         self.write_heuristic_vals()
 
 
