@@ -150,7 +150,10 @@ class Agent:
 
         print(self.H_VALS)
         # want to move importance up one because we're calculating on an old board somehow i think
-        self.H_VALS[min(max_key+1, 5)] += alpha_val
+        if max_key == 'capture':
+            self.H_VALS[max_key] += alpha_val
+        else:
+            self.H_VALS[min(max_key+1, 5)] += alpha_val
         self.write_heuristic_vals()
 
 
