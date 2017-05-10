@@ -15,15 +15,16 @@ class Agent:
     def __init__(self):
         self.is_learning = True # used to tag agent as needing an update
         self.ALPHA_VAL = 1
+        self.OMEGA_VAL = 50
         self.prev_state = None
         self.H_VALS = {
                 0: 0,
-                1: 0,
-                2: 0,
+                1: 1,
+                2: 1,
                 3: 1,
                 4: 1,
-                5: 200,
-                'capture': 5
+                5: 1,
+                'capture': 1
                 }
         self.load_heuristic_vals()
 
@@ -140,7 +141,7 @@ class Agent:
         # update max key with alpha
         acc = 0
         if win:
-            alpha_val = self.ALPHA_VAL*4
+            alpha_val = self.ALPHA_VAL*self.OMEGA_VAL
         else:
             alpha_val = self.ALPHA_VAL
 
