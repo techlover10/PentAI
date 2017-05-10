@@ -6,6 +6,7 @@
 # whatever command is desired.
 
 from terminal import Printer
+from copy import copy, deepcopy
 import game.Game as game
 import importlib
 
@@ -123,7 +124,7 @@ while cmd != 'exit':
             print(new_agent.value_state(current_game.board, current_game.current_turn))
 
         elif cmd[0] == 'heuristic':
-            session.print_heuristic(current_game.board, int(cmd[1]) - 1, int(cmd[2]) - 1, int(cmd[3]))
+            session.print_heuristic(deepcopy(current_game.board).play(int(cmd[3]), int(cmd[1]) - 1, int(cmd[2]) - 1), int(cmd[1]) - 1, int(cmd[2]) - 1, int(cmd[3]))
 
         elif cmd[0] == 'reset':
             current_game.reset()
