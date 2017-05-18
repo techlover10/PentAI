@@ -1,5 +1,0 @@
-start agent
-play 2 1
-board
-value
-exit

@@ -8,10 +8,14 @@ from logic.Logic import heuristic_count, check_win
 from copy import copy, deepcopy
 import random, math, json, os
 
+NORM_VAL = 25
+TRIGGER_VAL = 300
+
 class Agent:
     def __init__(self):
         self.is_learning = True # used to tag agent as needing an update
         self.ALPHA_VAL = 1
+        self.OMEGA_VAL = 50
         self.prev_state = None
         self.H_VALS = {
                 0: 0,
@@ -19,7 +23,7 @@ class Agent:
                 2: 1,
                 3: 1,
                 4: 1,
-                5: 500,
+                5: 1,
                 'capture': 1
                 }
         self.load_heuristic_vals()
@@ -45,8 +49,6 @@ class Agent:
             curr_raw = heuristic_count(board, r, c, pid)
             for key in curr_raw.keys():
                 count = curr_raw[key]
-                #print((r,c))
-                #print(curr_raw)
                 if key in self.H_VALS.keys():
                     if count in state_val:
                         state_val[count] += self.H_VALS[key]
@@ -72,8 +74,6 @@ class Agent:
             curr_raw = heuristic_count(board, r, c, pid)
             for key in curr_raw.keys():
                 count = curr_raw[key]
-                #print((r,c))
-                #print(curr_raw)
                 if key in self.H_VALS.keys():
                     state_val += self.H_VALS[key]
                 else:
@@ -137,7 +137,7 @@ class Agent:
         # update max key with alpha
         acc = 0
         if win:
-            alpha_val = self.ALPHA_VAL*4
+            alpha_val = self.ALPHA_VAL*self.OMEGA_VAL
         else:
             alpha_val = self.ALPHA_VAL
 
@@ -148,12 +148,22 @@ class Agent:
 
         #acc = max(acc - alpha_val, 0)
 
-        print(self.H_VALS)
         # want to move importance up one because we're calculating on an old board somehow i think
         if max_key == 'capture':
             self.H_VALS[max_key] += alpha_val
         else:
             self.H_VALS[min(max_key+1, 5)] += alpha_val
+
+        needs_norm = False
+        for i in self.H_VALS.keys():
+            if self.H_VALS[i] > TRIGGER_VAL:
+                needs_norm = True
+                break
+
+        if needs_norm:
+            for i in self.H_VALS.keys():
+                self.H_VALS[i] = math.ceil(self.H_VALS[i]/NORM_VAL)
+
         self.write_heuristic_vals()
 
 
@@ -174,6 +184,5 @@ class Agent:
 
 
     def write_heuristic_vals(self):
-        print(json.dumps(self.H_VALS))
         open('agents/heuristic.json', 'w').write(json.dumps(self.H_VALS))
 
